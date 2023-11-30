@@ -1,21 +1,17 @@
-package org.nxx5.baseball;
+package baseball;
 
 import com.alibaba.fastjson2.JSON;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
 import org.junit.jupiter.api.Test;
+import org.nxx5.baseball.gson.GsonBuild;
+import org.nxx5.baseball.jackson.JacksonBuild;
 import org.nxx5.baseball.records.*;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -33,19 +29,14 @@ public class TheTest {
 
     @Test
     public void testWSGson(){
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(OffsetDateTime.class, (JsonDeserializer<OffsetDateTime>) (json, type, context) -> OffsetDateTime.parse(json.getAsString()));
-        builder.registerTypeAdapter(LocalDate.class, (JsonDeserializer<LocalDate>) (json, type, context) -> LocalDate.parse(json.getAsString()));
-        builder.registerTypeAdapter(LocalTime.class, (JsonDeserializer<LocalTime>) (json, type, context) -> LocalTime.parse(json.getAsString()));
-        Gson gson = builder.create();
+        Gson gson = GsonBuild.builder().create();
         GameFeed gameFeed = gson.fromJson(getWSReader(), GameFeed.class);
         testGameFeed(gameFeed);
     }
 
     @Test
     public void testWSJackson() throws IOException {
-        ObjectMapper objectMapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        ObjectMapper objectMapper = JacksonBuild.builder().build();
         GameFeed gameFeed = objectMapper.readValue(getWSReader(), GameFeed.class);
         testGameFeed(gameFeed);
     }
@@ -56,7 +47,7 @@ public class TheTest {
         testGameFeed(gameFeed);
     }
 
-    public void testGameFeed(GameFeed gameFeed){
+    public static void testGameFeed(GameFeed gameFeed){
         assertEquals(748534L, gameFeed.gamePk());
         assertEquals("/api/v1.1/game/748534/feed/live", gameFeed.link());
 
@@ -92,5 +83,7 @@ public class TheTest {
         assertEquals("5:03", datetime.time());
         assertEquals("PM", datetime.ampm());
     }
+
+
 
 }

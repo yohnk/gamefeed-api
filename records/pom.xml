@@ -1,0 +1,13 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.nxx5.baseball</groupId>
+        <artifactId>gamefeed</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>records</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+</project>
