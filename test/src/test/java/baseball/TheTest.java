@@ -171,7 +171,81 @@ public class TheTest {
         assertEquals(0, leagueRecord.ties());
         assertEquals(".200", leagueRecord.pct());
 
+        Team away = teams.away();
+        assertNotNull(away);
+        assertEquals("N", away.allStarStatus());
+        assertEquals(140, away.id());
+        assertEquals("Texas Rangers", away.name());
+        assertEquals("/api/v1/teams/140", away.link());
+        assertEquals(2023L, away.season());
+        assertEquals("tex", away.teamCode());
+        assertEquals("tex", away.fileCode());
+        assertEquals("TEX", away.abbreviation());
+        assertEquals("Rangers", away.teamName());
+        assertEquals("Arlington", away.locationName());
+        assertEquals("1961", away.firstYearOfPlay());
+        assertEquals("Texas", away.shortName());
+        assertEquals("Texas", away.franchiseName());
+        assertEquals("Rangers", away.clubName());
+        assertTrue(away.active());
 
+        springLeague = away.springLeague();
+        assertNotNull(springLeague);
+        assertEquals(114, springLeague.id());
+        assertEquals("Cactus League", springLeague.name());
+        assertEquals("/api/v1/league/114", springLeague.link());
+        assertEquals("CL", springLeague.abbreviation());
+
+        venue = away.venue();
+        assertNotNull(venue);
+        assertEquals(5325, venue.id());
+        assertEquals("Globe Life Field", venue.name());
+        assertEquals("/api/v1/venues/5325", venue.link());
+
+        springVenue = away.springVenue();
+        assertNotNull(springVenue);
+        assertEquals(2603, springVenue.id());
+        assertEquals("/api/v1/venues/2603", springVenue.link());
+
+        league = away.league();
+        assertNotNull(league);
+        assertEquals(103, league.id());
+        assertEquals("American League", league.name());
+        assertEquals("/api/v1/league/103", league.link());
+
+        division = away.division();
+        assertNotNull(division);
+        assertEquals(200, division.id());
+        assertEquals("American League West", division.name());
+        assertEquals("/api/v1/divisions/200", division.link());
+
+        sport = away.sport();
+        assertNotNull(sport);
+        assertEquals(1L, sport.id());
+        assertEquals("/api/v1/sports/1", sport.link());
+        assertEquals("Major League Baseball", sport.name());
+
+        record = away.record();
+        assertNotNull(record);
+        assertEquals(5, record.gamesPlayed());
+        assertEquals("-", record.wildCardGamesBack());
+        assertEquals("-", record.leagueGamesBack());
+        assertEquals("-", record.springLeagueGamesBack());
+        assertEquals("-", record.sportGamesBack());
+        assertEquals("-", record.divisionGamesBack());
+        assertEquals("-", record.conferenceGamesBack());
+        assertNotNull(record.records());
+        assertFalse(record.divisionLeader());
+        assertEquals(4, record.wins());
+        assertEquals(1, record.losses());
+        assertEquals(".800", record.winningPercentage());
+
+        leagueRecord = record.leagueRecord();
+        assertNotNull(leagueRecord);
+        assertEquals(4, leagueRecord.wins());
+        assertEquals(1, leagueRecord.losses());
+        assertEquals(0, leagueRecord.ties());
+        assertEquals(".800", leagueRecord.pct());
     }
 
 
