@@ -300,6 +300,51 @@ public class TheTest {
         assertEquals("Frías", player.boxscoreName());
         assertEquals("Guzman", player.nameMatrilineal());
         assertEquals("FREE-iss", player.pronunciation());
+
+        venue = gameData.venue();
+        assertNotNull(venue);
+        assertEquals(15, venue.id());
+        assertEquals("Chase Field", venue.name());
+        assertEquals("/api/v1/venues/15", venue.link());
+        assertTrue(venue.active());
+        assertEquals(venue.season(), "2023");
+
+        Location location = venue.location();
+        assertNotNull(location);
+        assertEquals("401 East Jefferson Street", location.address1());
+        assertEquals("Phoenix", location.city());
+        assertEquals("Arizona", location.state());
+        assertEquals("AZ", location.stateAbbrev());
+        assertEquals("85004", location.postalCode());
+        assertEquals(0.0, location.azimuthAngle());
+        assertEquals(1086, location.elevation());
+        assertEquals("USA", location.country());
+        assertEquals("(602) 462-6500", location.phone());
+
+        Coordinates defaultCoordinates = location.defaultCoordinates();
+        assertNotNull(defaultCoordinates);
+        assertEquals(33.445302, defaultCoordinates.latitude());
+        assertEquals(-112.066687, defaultCoordinates.longitude());
+
+        Timezone timezone = venue.timeZone();
+        assertNotNull(timezone);
+        assertEquals("America/Phoenix", timezone.id());
+        assertEquals(-7, timezone.offset());
+        assertEquals(-7, timezone.offsetAtGameTime());
+        assertEquals("MST", timezone.tz());
+
+        FieldInfo fieldInfo = venue.fieldInfo();
+        assertNotNull(fieldInfo);
+        assertEquals(48359, fieldInfo.capacity());
+        assertEquals("Artificial Turf", fieldInfo.turfType());
+        assertEquals("Retractable", fieldInfo.roofType());
+        assertEquals(328, fieldInfo.leftLine());
+        assertEquals(376, fieldInfo.left());
+        assertEquals(412, fieldInfo.leftCenter());
+        assertEquals(407, fieldInfo.center());
+        assertEquals(414, fieldInfo.rightCenter());
+        assertEquals(376, fieldInfo.right());
+        assertEquals(335, fieldInfo.rightLine());
     }
 
 
