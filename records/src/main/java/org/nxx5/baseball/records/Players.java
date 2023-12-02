@@ -1,4 +1,7 @@
 package org.nxx5.baseball.records;
 
-public record Players() {
+import java.util.HashMap;
+import java.util.LinkedList;
+
+public class Players extends HashMap<Long, Player> {
 }

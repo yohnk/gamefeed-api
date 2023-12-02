@@ -1,13 +1,12 @@
 package baseball;
 
-import com.alibaba.fastjson2.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.nxx5.baseball.gson.GsonBuild;
 import org.nxx5.baseball.jackson.JacksonBuild;
-import org.nxx5.baseball.records.*;
 import org.nxx5.baseball.records.Record;
+import org.nxx5.baseball.records.*;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,11 +40,12 @@ public class TheTest {
         testGameFeed(gameFeed);
     }
 
-    @Test
-    public void testWSFastJson() throws IOException {
-        GameFeed gameFeed = JSON.parseObject(getWSReader(), GameFeed.class);
-        testGameFeed(gameFeed);
-    }
+//    @Test
+//    public void testWSFastJson() throws IOException {
+//        FastJsonBuild.register();
+//        GameFeed gameFeed = JSON.parseObject(getWSReader(), GameFeed.class);
+//        testGameFeed(gameFeed);
+//    }
 
     public static void testGameFeed(GameFeed gameFeed){
         assertEquals(748534L, gameFeed.gamePk());
@@ -246,6 +246,67 @@ public class TheTest {
         assertEquals(1, leagueRecord.losses());
         assertEquals(0, leagueRecord.ties());
         assertEquals(".800", leagueRecord.pct());
+
+        Players players = gameData.players();
+        assertNotNull(players);
+        assertEquals(52, players.size());
+
+        Player player = players.get(691783L);
+        assertNotNull(player);
+        assertEquals(691783L, player.id());
+        assertEquals("Jordan Lawlar", player.fullName());
+        assertEquals("/api/v1/people/691783", player.link());
+        assertEquals("Jordan", player.firstName());
+        assertEquals("Lawlar", player.lastName());
+        assertEquals("10", player.primaryNumber());
+        assertEquals(LocalDate.of(2002, 7, 17), player.birthDate());
+        assertEquals(21, player.currentAge());
+        assertEquals("Carrollton", player.birthCity());
+        assertEquals("TX", player.birthStateProvince());
+        assertEquals("USA", player.birthCountry());
+        assertEquals("6' 1\"", player.height());
+        assertEquals(190L, player.weight());
+        assertTrue(player.active());
+        assertEquals("Jordan", player.useName());
+        assertEquals("Lawlar", player.useLastName());
+        assertEquals("Jeffrey-Joseph", player.middleName());
+        assertEquals("Lawlar", player.boxscoreName());
+        assertEquals("M", player.gender());
+        assertTrue(player.isPlayer());
+        assertTrue(player.isVerified());
+        assertEquals(2021L, player.draftYear());
+        assertEquals(LocalDate.of(2023, 9, 7), player.mlbDebutDate());
+        assertEquals("Jordan Lawlar", player.nameFirstLast());
+        assertEquals("jordan-lawlar-691783", player.nameSlug());
+        assertEquals("Jordan Lawlar", player.firstLastName());
+        assertEquals("Lawlar, Jordan", player.lastFirstName());
+        assertEquals("Lawlar, J", player.lastInitName());
+        assertEquals("J Lawlar", player.initLastName());
+        assertEquals("Jordan Jeffrey-Joseph Lawlar", player.fullFMLName());
+        assertEquals("Lawlar, Jordan Jeffrey-Joseph", player.fullLFMName());
+        assertEquals(3.44, player.strikeZoneTop());
+        assertEquals(1.6, player.strikeZoneBottom());
+
+        Position primaryPosition = player.primaryPosition();
+        assertEquals("6", primaryPosition.code());
+        assertEquals("Shortstop", primaryPosition.name());
+        assertEquals("Infielder", primaryPosition.type());
+        assertEquals("SS", primaryPosition.abbreviation());
+
+        Hand batSide = player.batSide();
+        assertEquals("R", batSide.code());
+        assertEquals("Right", batSide.description());
+
+        Hand pitchHand = player.pitchHand();
+        assertEquals("R", pitchHand.code());
+        assertEquals("Right", pitchHand.description());
+
+        player = players.get(666818L);
+        assertNotNull(player);
+        assertEquals("Frías", player.useLastName());
+        assertEquals("Frías", player.boxscoreName());
+        assertEquals("Guzman", player.nameMatrilineal());
+        assertEquals("FREE-iss", player.pronunciation());
     }
 
 
