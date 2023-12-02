@@ -40,13 +40,6 @@ public class TheTest {
         testGameFeed(gameFeed);
     }
 
-//    @Test
-//    public void testWSFastJson() throws IOException {
-//        FastJsonBuild.register();
-//        GameFeed gameFeed = JSON.parseObject(getWSReader(), GameFeed.class);
-//        testGameFeed(gameFeed);
-//    }
-
     public static void testGameFeed(GameFeed gameFeed){
         assertEquals(748534L, gameFeed.gamePk());
         assertEquals("/api/v1.1/game/748534/feed/live", gameFeed.link());
