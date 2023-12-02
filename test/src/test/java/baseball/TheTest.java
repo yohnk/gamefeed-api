@@ -345,6 +345,35 @@ public class TheTest {
         assertEquals(414, fieldInfo.rightCenter());
         assertEquals(376, fieldInfo.right());
         assertEquals(335, fieldInfo.rightLine());
+
+        Venue officialVenue = gameData.officialVenue();
+        assertNotNull(officialVenue);
+        assertEquals(15, officialVenue.id());
+        assertEquals("/api/v1/venues/15", officialVenue.link());
+
+        Weather weather = gameData.weather();
+        assertNotNull(weather);
+        assertEquals("Clear", weather.condition());
+        assertEquals("79", weather.temp());
+        assertEquals("1 mph, Varies", weather.wind());
+
+        GameInfo gameInfo = gameData.gameInfo();
+        assertNotNull(gameInfo);
+        assertEquals(48511L, gameInfo.attendance());
+        assertEquals(OffsetDateTime.of(2023, 11, 2, 0, 6, 0, 0, ZoneOffset.UTC), gameInfo.firstPitch());
+        assertEquals(174L, gameInfo.gameDurationMinutes());
+
+        Review review = gameData.review();
+        assertFalse(review.hasChallenges());
+        Reviews awayReview = review.away();
+        assertNotNull(awayReview);
+        assertEquals(0, awayReview.used());
+        assertEquals(1, awayReview.remaining());
+        Reviews homeReview = review.home();
+        assertNotNull(homeReview);
+        assertEquals(0, homeReview.used());
+        assertEquals(1, homeReview.remaining());
+
     }
 
 
