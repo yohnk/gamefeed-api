@@ -244,7 +244,7 @@ public class TheTest {
         assertNotNull(players);
         assertEquals(52, players.size());
 
-        Player player = players.get(691783L);
+        Person player = players.get(691783L);
         assertNotNull(player);
         assertEquals(691783L, player.id());
         assertEquals("Jordan Lawlar", player.fullName());
@@ -365,15 +365,49 @@ public class TheTest {
 
         Review review = gameData.review();
         assertFalse(review.hasChallenges());
-        Reviews awayReview = review.away();
+        Used awayReview = review.away();
         assertNotNull(awayReview);
         assertEquals(0, awayReview.used());
         assertEquals(1, awayReview.remaining());
-        Reviews homeReview = review.home();
+        Used homeReview = review.home();
         assertNotNull(homeReview);
         assertEquals(0, homeReview.used());
         assertEquals(1, homeReview.remaining());
 
+        Flags flags = gameData.flags();
+        assertNotNull(flags);
+        assertFalse(flags.noHitter());
+        assertFalse(flags.perfectGame());
+        assertFalse(flags.awayTeamNoHitter());
+        assertFalse(flags.awayTeamPerfectGame());
+        assertFalse(flags.homeTeamNoHitter());
+        assertFalse(flags.homeTeamPerfectGame());
+
+        List<Object> alerts = gameData.alerts();
+        assertEquals(0, alerts.size());
+
+        Person officialScorer = gameData.officialScorer();
+        assertNotNull(officialScorer);
+        assertEquals(607890L, officialScorer.id());
+        assertEquals("Jason Johnson", officialScorer.fullName());
+        assertEquals("/api/v1/people/607890", officialScorer.link());
+
+        Person primaryDatacaster = gameData.primaryDatacaster();
+        assertNotNull(primaryDatacaster);
+        assertEquals(430022L, primaryDatacaster.id());
+        assertEquals("Chris Lentine", primaryDatacaster.fullName());
+        assertEquals("/api/v1/people/430022", primaryDatacaster.link());
+
+        MoundVisits moundVisits = gameData.moundVisits();
+        assertNotNull(moundVisits);
+        Used awayUsed = moundVisits.away();
+        assertNotNull(awayUsed);
+        assertEquals(3, awayUsed.used());
+        assertEquals(2, awayUsed.remaining());
+        Used homeUsed = moundVisits.home();
+        assertNotNull(homeUsed);
+        assertEquals(4, homeUsed.used());
+        assertEquals(1, homeUsed.remaining());
     }
 
 

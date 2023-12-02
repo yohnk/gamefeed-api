@@ -1,18 +1,16 @@
 package org.nxx5.baseball.jackson;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper.Builder;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.nxx5.baseball.records.Player;
+import org.nxx5.baseball.records.Person;
 import org.nxx5.baseball.records.Players;
 
 import java.io.IOException;
@@ -52,7 +50,7 @@ public class JacksonBuild {
             for (Iterator<String> it = treeNode.fieldNames(); it.hasNext();) {
                 String key = it.next();
                 TreeNode player = treeNode.get(key);
-                Player p = mapper.readValue(player.traverse(), Player.class);
+                Person p = mapper.readValue(player.traverse(), Person.class);
                 players.put(p.id(), p);
             }
             return players;

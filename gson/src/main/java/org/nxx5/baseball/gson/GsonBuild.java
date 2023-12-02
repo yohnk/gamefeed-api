@@ -7,7 +7,7 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 import com.google.gson.*;
-import org.nxx5.baseball.records.Player;
+import org.nxx5.baseball.records.Person;
 import org.nxx5.baseball.records.Players;
 
 public class GsonBuild {
@@ -34,7 +34,7 @@ public class GsonBuild {
             Map<String, JsonElement> jsonMap = jsonElement.getAsJsonObject().asMap();
             for(String key : jsonMap.keySet()){
                 JsonElement element = jsonMap.get(key);
-                Player p = gson.fromJson(element, Player.class);
+                Person p = gson.fromJson(element, Person.class);
                 players.put(p.id(), p);
             }
             return players;
