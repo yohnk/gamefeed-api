@@ -16,6 +16,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,12 +45,20 @@ public class TheTest {
         assertEquals(748534L, gameFeed.gamePk());
         assertEquals("/api/v1.1/game/748534/feed/live", gameFeed.link());
 
+        /*
+        METADATA
+         */
+
         MetaData metaData = gameFeed.metaData();
         assertNotNull(metaData);
         assertEquals(10L, metaData.getWait());
         assertEquals("20231102_030054", metaData.getTimeStamp());
         assertEquals(List.of("strikeout", "game_finished"), metaData.getGameEvents());
         assertEquals(List.of("midInning", "countChange", "count23", "gameStateChangeToGameOver"), metaData.getLogicalEvents());
+
+        /*
+        GAMEDATA
+         */
 
         GameData gameData = gameFeed.gameData();
         assertNotNull(gameData);
@@ -408,6 +417,49 @@ public class TheTest {
         assertNotNull(homeUsed);
         assertEquals(4, homeUsed.used());
         assertEquals(1, homeUsed.remaining());
+
+        /*
+        LIVEDATA
+         */
+
+        LiveData liveData = gameFeed.liveData();
+        assertNotNull(liveData);
+
+        Plays plays = liveData.plays();
+        assertNotNull(plays);
+
+        List<Play> allPlays = plays.allPlays();
+        assertNotNull(allPlays);
+        assertEquals(77, allPlays.size());
+
+        Play p = allPlays.get(0);
+        assertNotNull(p);
+
+        Result result = p.result();
+        assertNotNull(result);
+        assertEquals("atBat", result.type());
+        assertEquals("Flyout", result.event());
+        assertEquals("field_out", result.eventType());
+        assertEquals("Marcus Semien flies out to center fielder Alek Thomas.", result.description());
+        assertEquals(0, result.rbi());
+        assertEquals(0, result.awayScore());
+        assertEquals(0, result.homeScore());
+        assertTrue(result.isOut());
+
+        About about = p.about();
+        assertNotNull(about);
+        assertEquals(0, about.atBatIndex());
+        assertEquals("top", about.halfInning());
+        assertTrue(about.isTopInning());
+        assertEquals(1, about.inning());
+        assertEquals(OffsetDateTime.of(2023, 11, 2, 0, 6, 13, (int)TimeUnit.MILLISECONDS.toNanos(497), ZoneOffset.UTC), about.startTime());
+        assertEquals(OffsetDateTime.of(2023, 11, 2, 0, 7, 23, (int)TimeUnit.MILLISECONDS.toNanos(589), ZoneOffset.UTC), about.endTime());
+        assertTrue(about.isComplete());
+        assertFalse(about.isScoringPlay());
+        assertFalse(about.hasReview());
+        assertTrue(about.hasOut());
+        assertEquals(0, about.captivatingIndex());
+
     }
 
 
