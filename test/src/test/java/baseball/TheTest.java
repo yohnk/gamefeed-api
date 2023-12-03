@@ -460,6 +460,51 @@ public class TheTest {
         assertTrue(about.hasOut());
         assertEquals(0, about.captivatingIndex());
 
+        Count count = p.count();
+        assertNotNull(count);
+        assertEquals(2, count.balls());
+        assertEquals(1, count.strikes());
+        assertEquals(1, count.outs());
+
+        Matchup matchup = p.matchup();
+        assertNotNull(matchup);
+
+        Person batter = matchup.batter();
+        assertNotNull(batter);
+        assertEquals(543760, batter.id());
+        assertEquals("Marcus Semien", batter.fullName());
+        assertEquals("/api/v1/people/543760", batter.link());
+
+        batSide = matchup.batSide();
+        assertNotNull(batSide);
+        assertEquals("R", batSide.code());
+        assertEquals("Right", batSide.description());
+
+        Person pitcher = matchup.pitcher();
+        assertNotNull(pitcher);
+        assertEquals(668678, pitcher.id());
+        assertEquals("Zac Gallen", pitcher.fullName());
+        assertEquals("/api/v1/people/668678", pitcher.link());
+
+        pitchHand = matchup.pitchHand();
+        assertNotNull(pitchHand);
+        assertEquals("R", pitchHand.code());
+        assertEquals("Right", pitchHand.description());
+
+        List<Object> batterHotColdZones = matchup.batterHotColdZones();
+        assertNotNull(batterHotColdZones);
+        assertTrue(batterHotColdZones.isEmpty());
+
+        List<Object> pitcherHotColdZones = matchup.pitcherHotColdZones();
+        assertNotNull(pitcherHotColdZones);
+        assertTrue(pitcherHotColdZones.isEmpty());
+
+        Splits splits = matchup.splits();
+        assertNotNull(splits);
+        assertEquals("vs_RHP", splits.batter());
+        assertEquals("vs_RHB", splits.pitcher());
+        assertEquals("Empty", splits.menOnBase());
+
     }
 
 
