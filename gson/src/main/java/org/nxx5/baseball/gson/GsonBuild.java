@@ -1,14 +1,14 @@
 package org.nxx5.baseball.gson;
 
+import com.google.gson.*;
+import org.nxx5.baseball.records.Person;
+import org.nxx5.baseball.records.Players;
+
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.util.Map;
-
-import com.google.gson.*;
-import org.nxx5.baseball.records.Person;
-import org.nxx5.baseball.records.Players;
 
 public class GsonBuild {
 
