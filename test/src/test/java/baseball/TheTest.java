@@ -505,6 +505,21 @@ public class TheTest {
         assertEquals("vs_RHB", splits.pitcher());
         assertEquals("Empty", splits.menOnBase());
 
+        List<Long> pitchIndex = p.pitchIndex();
+        assertNotNull(pitchIndex);
+        assertEquals(4, pitchIndex.size());
+        assertEquals(List.of(3L, 4L, 5L, 6L), pitchIndex);
+
+        List<Long> actionIndex = p.actionIndex();
+        assertNotNull(actionIndex);
+        assertEquals(3, actionIndex.size());
+        assertEquals(List.of(0L, 1L, 2L), actionIndex);
+
+        List<Long> runnerIndex = p.runnerIndex();
+        assertNotNull(runnerIndex);
+        assertEquals(1, runnerIndex.size());
+        assertEquals(List.of(0L), runnerIndex);
+
     }
 
 
