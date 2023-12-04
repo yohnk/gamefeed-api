@@ -520,6 +520,57 @@ public class TheTest {
         assertEquals(1, runnerIndex.size());
         assertEquals(List.of(0L), runnerIndex);
 
+        List<Runner> runners = p.runners();
+        assertNotNull(runners);
+        assertEquals(1, runners.size());
+
+        Runner runner = runners.get(0);
+        assertNotNull(runner);
+
+        Movement movement = runner.movement();
+        assertNull(movement.originBase());
+        assertNull(movement.start());
+        assertNull(movement.end());
+        assertEquals("1B", movement.outBase());
+        assertTrue(movement.isOut());
+        assertEquals(1, movement.outNumber());
+
+        RunnerDetails details = runner.details();
+        assertNotNull(details);
+        assertEquals("Flyout", details.event());
+        assertEquals("field_out", details.eventType());
+        assertNull(details.movementReason());
+        assertNull(details.responsiblePitcher());
+        assertFalse(details.isScoringEvent());
+        assertFalse(details.rbi());
+        assertFalse(details.earned());
+        assertFalse(details.teamUnearned());
+        assertEquals(6, details.playIndex());
+
+        Person rRunner = details.runner();
+        assertNotNull(rRunner);
+        assertEquals(543760, rRunner.id());
+        assertEquals("Marcus Semien", rRunner.fullName());
+        assertEquals("/api/v1/people/543760", rRunner.link());
+
+        //TODO - Look at what's Null above and find examples to test them
+
+        List<Credit> credits = runner.credits();
+        assertNotNull(credits);
+        assertEquals(1, credits.size());
+        Credit credit = credits.get(0);
+        Person creditPlayer = credit.player();
+        assertNotNull(creditPlayer);
+        assertEquals(677950, creditPlayer.id());
+        assertEquals("/api/v1/people/677950", creditPlayer.link());
+        Position position = credit.position();
+        assertNotNull(position);
+        assertEquals("8", position.code());
+        assertEquals("Outfielder", position.name());
+        assertEquals("Outfielder", position.type());
+        assertEquals("CF", position.abbreviation());
+        assertEquals("f_putout", credit.credit());
+
     }
 
 
