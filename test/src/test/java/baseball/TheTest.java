@@ -675,6 +675,65 @@ public class TheTest {
         assertNotNull(scoringPlays);
         assertEquals(List.of(48L, 68L, 71L), scoringPlays);
 
+        List<PlayByInning> byInning = plays.playsByInning();
+        assertNotNull(byInning);
+        assertEquals(9, byInning.size());
+
+        PlayByInning playByInning = byInning.get(0);
+        assertNotNull(playByInning);
+        assertEquals(0, playByInning.startIndex());
+        assertEquals(7, playByInning.endIndex());
+        assertEquals(List.of(0L, 1L, 2L), playByInning.top());
+        assertEquals(List.of(3L, 4L, 5L, 6L, 7L), playByInning.bottom());
+
+        Hits hits = playByInning.hits();
+        assertNotNull(hits);
+
+        List<Hit> awayHits = hits.away();
+        assertNotNull(awayHits);
+        assertEquals(2, awayHits.size());
+
+        Hit hit = awayHits.get(0);
+        assertNotNull(hit);
+        assertEquals(1, hit.inning());
+        assertEquals("O", hit.type());
+        assertEquals("Flyout", hit.description());
+
+        Team hitTeam = hit.team();
+        assertNotNull(hitTeam);
+        assertEquals("N", hitTeam.allStarStatus());
+        assertEquals(140, hitTeam.id());
+        assertEquals("Texas Rangers", hitTeam.name());
+        assertEquals("/api/v1/teams/140", hitTeam.link());
+
+        League sl = hitTeam.springLeague();
+        assertNotNull(sl);
+        assertEquals(114, sl.id());
+        assertEquals("Cactus League", sl.name());
+        assertEquals("/api/v1/league/114", sl.link());
+        assertEquals("CL", sl.abbreviation());
+
+        Person hitPitcher = hit.pitcher();
+        assertNotNull(hitPitcher);
+        assertEquals(668678, hitPitcher.id());
+        assertEquals("Zac Gallen", hitPitcher.fullName());
+        assertEquals("/api/v1/people/668678", hitPitcher.link());
+
+        Person hitBatter = hit.batter();
+        assertNotNull(hitBatter);
+        assertEquals(543760, hitBatter.id());
+        assertEquals("Marcus Semien", hitBatter.fullName());
+        assertEquals("/api/v1/people/543760", hitBatter.link());
+
+        FieldedCoordinates hitCoords = hit.coordinates();
+        assertNotNull(hitCoords);
+        assertEquals(131.08, hitCoords.x());
+        assertEquals(77.62, hitCoords.y());
+
+        List<Hit> homeHits = hits.home();
+        assertNotNull(homeHits);
+        assertEquals(3, homeHits.size());
+
     }
 
 
