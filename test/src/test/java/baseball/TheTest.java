@@ -434,6 +434,8 @@ public class TheTest {
 
         Play p = allPlays.get(0);
         assertNotNull(p);
+        assertEquals(OffsetDateTime.of(2023, 11, 2, 0, 7, 23, (int)TimeUnit.MILLISECONDS.toNanos(589), ZoneOffset.UTC), p.playEndTime());
+        assertEquals(0, p.atBatIndex());
 
         Result result = p.result();
         assertNotNull(result);
@@ -570,6 +572,85 @@ public class TheTest {
         assertEquals("Outfielder", position.type());
         assertEquals("CF", position.abbreviation());
         assertEquals("f_putout", credit.credit());
+
+        List<PlayEvent> playEvents = p.playEvents();
+        assertNotNull(playEvents);
+        assertEquals(7, playEvents.size());
+
+        PlayEvent playEvent = playEvents.get(3);
+        assertNotNull(playEvent);
+        assertEquals(3, playEvent.index());
+        assertEquals("7c2e53d2-ec36-4348-83af-d10406f98830", playEvent.playId());
+        assertEquals(1, playEvent.pitchNumber());
+        assertEquals(OffsetDateTime.of(2023, 11, 2, 0, 6, 15, (int)TimeUnit.MILLISECONDS.toNanos(846), ZoneOffset.UTC), playEvent.startTime());
+        assertEquals(OffsetDateTime.of(2023, 11, 2, 0, 6, 19, (int)TimeUnit.MILLISECONDS.toNanos(783), ZoneOffset.UTC), playEvent.endTime());
+        assertTrue(playEvent.isPitch());
+        assertEquals("pitch", playEvent.type());
+
+        Details pDetails = playEvent.details();
+        assertNotNull(pDetails);
+        assertEquals("Ball", pDetails.description());
+        assertEquals("B", pDetails.code());
+        assertEquals("rgba(39, 161, 39, 1.0)", pDetails.ballColor());
+        assertEquals("rgba(188, 0, 33, 1.0)", pDetails.trailColor());
+        assertFalse(pDetails.isInPlay());
+        assertFalse(pDetails.isStrike());
+        assertTrue(pDetails.isBall());
+        assertFalse(pDetails.isOut());
+        assertFalse(pDetails.hasReview());
+
+        Call call = pDetails.call();
+        assertNotNull(call);
+        assertEquals("B", call.code());
+        assertEquals("Ball", call.description());
+
+        PitchType pt = pDetails.type();
+        assertNotNull(pt);
+        assertEquals("FF", pt.code());
+        assertEquals("Four-Seam Fastball", pt.description());
+
+        count = playEvent.count();
+        assertNotNull(count);
+        assertEquals(1, count.balls());
+        assertEquals(0, count.strikes());
+        assertEquals(0, count.outs());
+
+        PitchData pitchData = playEvent.pitchData();
+        assertNotNull(pitchData);
+        assertEquals(94.4, pitchData.startSpeed());
+        assertEquals(86.2, pitchData.endSpeed());
+        assertEquals(3.38431964486296, pitchData.strikeZoneTop());
+        assertEquals(1.5678269255926, pitchData.strikeZoneBottom());
+
+        PitchCoordinates pCoords = pitchData.coordinates();
+        assertNotNull(pCoords);
+        assertEquals(30.682850258846507, pCoords.aY());
+        assertEquals(-12.893144161286793, pCoords.aZ());
+        assertEquals(-2.394965224529101, pCoords.pfxX());
+        assertEquals(10.152441689678522, pCoords.pfxZ());
+        assertEquals(1.3186731766246924, pCoords.pX());
+        assertEquals(2.6309597029396663, pCoords.pZ());
+        assertEquals(10.644831536258499, pCoords.vX0());
+        assertEquals(-137.02756570372844, pCoords.vY0());
+        assertEquals(-6.261174898433838, pCoords.vZ0());
+        assertEquals(66.74, pCoords.x());
+        assertEquals(167.74, pCoords.y());
+        assertEquals(-2.3075058244583113, pCoords.x0());
+        assertEquals(50.001560349494575, pCoords.y0());
+        assertEquals(5.828830290616323, pCoords.z0());
+        assertEquals(-4.549538746752562, pCoords.aX());
+
+        Breaks breaks = pitchData.breaks();
+        assertNotNull(breaks);
+        assertEquals(8.4, breaks.breakAngle());
+        assertEquals(3.6, breaks.breakLength());
+        assertEquals(24.0, breaks.breakY());
+        assertEquals(-13.7, breaks.breakVertical());
+        assertEquals(17.2, breaks.breakVerticalInduced());
+        assertEquals(2.0, breaks.breakHorizontal());
+        assertEquals(2262, breaks.spinRate());
+        assertEquals(198, breaks.spinDirection());
+
 
     }
 
