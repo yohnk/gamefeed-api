@@ -555,8 +555,6 @@ public class TheTest {
         assertEquals("Marcus Semien", rRunner.fullName());
         assertEquals("/api/v1/people/543760", rRunner.link());
 
-        //TODO - Look at what's Null above and find examples to test them
-
         List<Credit> credits = runner.credits();
         assertNotNull(credits);
         assertEquals(1, credits.size());
@@ -651,6 +649,31 @@ public class TheTest {
         assertEquals(2262, breaks.spinRate());
         assertEquals(198, breaks.spinDirection());
 
+        //Fill in the "null" checks we did above with actual values
+        p = allPlays.get(48);
+        assertNotNull(p);
+        runner = p.runners().get(1);
+        assertNotNull(runner);
+        movement = runner.movement();
+        assertNotNull(movement);
+        assertEquals("3B", movement.originBase());
+        assertEquals("3B", movement.start());
+        assertEquals("score", movement.end());
+        details = runner.details();
+        assertEquals("r_adv_play", details.movementReason());
+        Person respPitch = details.responsiblePitcher();
+        assertNotNull(respPitch);
+        assertEquals(668678, respPitch.id());
+        assertEquals("/api/v1/people/668678", respPitch.link());
+
+        Play currentPlay = plays.currentPlay();
+        assertNotNull(currentPlay);
+        assertEquals(76, currentPlay.atBatIndex());
+        assertEquals(currentPlay, allPlays.get(76));
+
+        List<Long> scoringPlays = plays.scoringPlays();
+        assertNotNull(scoringPlays);
+        assertEquals(List.of(48L, 68L, 71L), scoringPlays);
 
     }
 
