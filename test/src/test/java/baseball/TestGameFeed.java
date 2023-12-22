@@ -20,12 +20,11 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TheTest {
+public class TestGameFeed {
 
     public Reader getWSReader(){
-        return new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("748534.json")));
+        return new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("gamefeed.json")));
     }
-
 
     @Test
     public void testWSGson(){
