@@ -72,6 +72,25 @@ public class TestSchedule {
         assertEquals("2023", game.season());
         assertEquals(OffsetDateTime.of(2023, 11, 2, 0, 3, 0, 0, ZoneOffset.UTC), game.gameDate());
         assertEquals(LocalDate.of(2023, 11, 1), game.officialDate());
+        assertFalse(game.isTie());
+        assertEquals(1, game.gameNumber());
+        assertTrue(game.publicFacing());
+        assertEquals("N", game.doubleHeader());
+        assertEquals("P", game.gamedayType());
+        assertEquals("N", game.tiebreaker());
+        assertEquals("14-748534-2023-11-01", game.calendarEventID());
+        assertEquals("2023", game.seasonDisplay());
+        assertEquals("night", game.dayNight());
+        assertEquals("World Series Game 5", game.description());
+        assertEquals(9, game.scheduledInnings());
+        assertFalse(game.reverseHomeAwayStatus());
+        assertEquals(175, game.inningBreakLength());
+        assertEquals(7, game.gamesInSeries());
+        assertEquals(5, game.seriesGameNumber());
+        assertEquals("World Series", game.seriesDescription());
+        assertEquals("S", game.recordSource());
+        assertEquals("N", game.ifNecessary());
+        assertEquals("Normal Game", game.ifNecessaryDescription());
 
         Status status = game.status();
         assertNotNull(status);
@@ -82,7 +101,44 @@ public class TestSchedule {
         assertFalse(status.startTimeTBD());
         assertEquals("F", status.abstractGameCode());
 
-        Teams teams = game.teams();
+        ScheduleTeams teams = game.teams();
+        assertNotNull(teams);
+
+        ScheduleTeam away = teams.away();
+        assertNotNull(away);
+        assertEquals(5, away.score());
+        assertTrue(away.isWinner());
+        assertFalse(away.splitSquad());
+        assertEquals(1, away.seriesNumber());
+
+        LeagueRecord record = away.leagueRecord();
+        assertNotNull(record);
+        assertEquals(4, record.wins());
+        assertEquals(1, record.losses());
+        assertEquals(".800", record.pct());
+
+        Team awayTeam = away.team();
+        assertNotNull(awayTeam);
+        assertEquals(140, awayTeam.id());
+        assertEquals("Texas Rangers", awayTeam.name());
+        assertEquals("/api/v1/teams/140", awayTeam.link());
+
+        ScheduleTeam home = teams.home();
+        assertNotNull(home);
+
+        Team homeTeam = home.team();
+        assertNotNull(homeTeam);
+        assertEquals(109, homeTeam.id());
+        assertEquals("Arizona Diamondbacks", homeTeam.name());
+        assertEquals("/api/v1/teams/109", homeTeam.link());
+
+        Venue venue = game.venue();
+        assertNotNull(venue);
+        assertEquals(15, venue.id());
+        assertEquals("Chase Field", venue.name());
+        assertEquals("/api/v1/venues/15", venue.link());
+
+
     }
 
 }
