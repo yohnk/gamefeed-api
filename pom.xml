@@ -14,13 +14,13 @@
     <module>records</module>
     <module>jackson</module>
     <module>test</module>
+    <module>hibernate</module>
   </modules>
 
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <junit.version>5.10.0</junit.version>
   </properties>
 
 </project>

@@ -1,4 +1,4 @@
-package baseball;
+package com.nxx5.baseball;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
