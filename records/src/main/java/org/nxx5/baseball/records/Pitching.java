@@ -1,0 +1,4 @@
+package org.nxx5.baseball.records;
+
+public record Pitching(Long groundOuts, Long airOuts, Long runs, Long doubles, Long triples, Long homeRuns, Long strikeOuts, Long baseOnBalls, Long intentionalWalks, Long hits, Long hitByPitch, Long atBats, String obp, Long caughtStealing, Long stolenBases, String stolenBasePercentage, Long numberOfPitches, String era, String inningsPitched, Long saveOpportunities, Long earnedRuns, String whip, Long battersFaced, Long outs, Long completeGames, Long shutouts, Long pitchesThrown, Long balls, Long strikes, String strikePercentage, Long hitBatsmen, Long balks, Long wildPitches, Long pickoffs, String groundOutsToAirouts, Long rbi, String pitchesPerInning, String runsScoredPer9, String homeRunsPer9, Long inheritedRunners, Long inheritedRunnersScored, Long catchersInterference, Long sacBunts, Long sacFlies, Long passedBall) {
+}

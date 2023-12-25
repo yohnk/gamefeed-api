@@ -733,6 +733,120 @@ public class TestGameFeed {
         assertNotNull(homeHits);
         assertEquals(3, homeHits.size());
 
+        //Boxscore
+
+        BoxScore boxScore = liveData.boxscore();
+        assertNotNull(boxScore);
+
+        BoxScoreTeams bsTeams = boxScore.teams();
+        assertNotNull(bsTeams);
+
+        BoxScoreTeam bsAway = bsTeams.away();
+        assertNotNull(bsAway);
+
+        Team team = bsAway.team();
+        assertNotNull(team);
+        assertEquals("N", team.allStarStatus());
+        assertEquals(140, team.id());
+        assertEquals("Texas Rangers", team.name());
+        assertEquals("/api/v1/teams/140", team.link());
+
+        TeamStats teamStats = bsAway.teamStats();
+        assertNotNull(teamStats);
+
+        Batting batting = teamStats.batting();
+        assertNotNull(batting);
+        assertEquals(5, batting.flyOuts());
+        assertEquals(12, batting.groundOuts());
+        assertEquals(5, batting.runs());
+        assertEquals(1, batting.doubles());
+        assertEquals(0, batting.triples());
+        assertEquals(1, batting.homeRuns());
+        assertEquals(9, batting.strikeOuts());
+        assertEquals(3, batting.baseOnBalls());
+        assertEquals(0, batting.intentionalWalks());
+        assertEquals(9, batting.hits());
+        assertEquals(0, batting.hitByPitch());
+        assertEquals(".218", batting.avg());
+        assertEquals(36, batting.atBats());
+        assertEquals(".303", batting.obp());
+        assertEquals(".408", batting.slg());
+        assertEquals(".711", batting.ops());
+        assertEquals(0, batting.caughtStealing());
+        assertEquals(0, batting.stolenBases());
+        assertEquals(".---", batting.stolenBasePercentage());
+        assertEquals(0, batting.groundIntoDoublePlay());
+        assertEquals(0, batting.groundIntoTriplePlay());
+        assertEquals(39, batting.plateAppearances());
+        assertEquals(13, batting.totalBases());
+        assertEquals(4, batting.rbi());
+        assertEquals(16, batting.leftOnBase());
+        assertEquals(0, batting.sacBunts());
+        assertEquals(0, batting.sacFlies());
+        assertEquals(0, batting.catchersInterference());
+        assertEquals(0, batting.pickoffs());
+        assertEquals("36.00", batting.atBatsPerHomeRun());
+
+        Pitching pitching = teamStats.pitching();
+        assertNotNull(pitching);
+        assertEquals(0, pitching.groundOuts());
+        assertEquals(0, pitching.airOuts());
+        assertEquals(0, pitching.runs());
+        assertEquals(1, pitching.doubles());
+        assertEquals(0, pitching.triples());
+        assertEquals(0, pitching.homeRuns());
+        assertEquals(10, pitching.strikeOuts());
+        assertEquals(6, pitching.baseOnBalls());
+        assertEquals(0, pitching.intentionalWalks());
+        assertEquals(5, pitching.hits());
+        assertEquals(0, pitching.hitByPitch());
+        assertEquals(31, pitching.atBats());
+        assertEquals(".297", pitching.obp());
+        assertEquals(0, pitching.caughtStealing());
+        assertEquals(2, pitching.stolenBases());
+        assertEquals("1.000", pitching.stolenBasePercentage());
+        assertEquals(138, pitching.numberOfPitches());
+        assertEquals("4.21", pitching.era());
+        assertEquals("9.0", pitching.inningsPitched());
+        assertEquals(0, pitching.saveOpportunities());
+        assertEquals(0, pitching.earnedRuns());
+        assertEquals("1.34", pitching.whip());
+        assertEquals(38, pitching.battersFaced());
+        assertEquals(27, pitching.outs());
+        assertEquals(0, pitching.completeGames());
+        assertEquals(1, pitching.shutouts());
+        assertEquals(138, pitching.pitchesThrown());
+        assertEquals(54, pitching.balls());
+        assertEquals(84, pitching.strikes());
+        assertEquals(".610", pitching.strikePercentage());
+        assertEquals(0, pitching.hitBatsmen());
+        assertEquals(0, pitching.balks());
+        assertEquals(0, pitching.wildPitches());
+        assertEquals(0, pitching.pickoffs());
+        assertEquals("-.--", pitching.groundOutsToAirouts());
+        assertEquals(0, pitching.rbi());
+        assertEquals("15.33", pitching.pitchesPerInning());
+        assertEquals("0.00", pitching.runsScoredPer9());
+        assertEquals("0.00", pitching.homeRunsPer9());
+        assertEquals(0, pitching.inheritedRunners());
+        assertEquals(0, pitching.inheritedRunnersScored());
+        assertEquals(0, pitching.catchersInterference());
+        assertEquals(1, pitching.sacBunts());
+        assertEquals(0, pitching.sacFlies());
+        assertEquals(0, pitching.passedBall());
+
+        Fielding fielding = teamStats.fielding();
+        assertNotNull(fielding);
+        assertEquals(0, fielding.caughtStealing());
+        assertEquals(2, fielding.stolenBases());
+        assertEquals("1.000", fielding.stolenBasePercentage());
+        assertEquals(10, fielding.assists());
+        assertEquals(27, fielding.putOuts());
+        assertEquals(0, fielding.errors());
+        assertEquals(37, fielding.chances());
+        assertEquals(0, fielding.passedBall());
+        assertEquals(0, fielding.pickoffs());
+
     }
 
 
