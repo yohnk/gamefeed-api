@@ -15,6 +15,7 @@
     <module>jackson</module>
     <module>test</module>
     <module>hibernate</module>
+      <module>mapping</module>
   </modules>
 
   <properties>
