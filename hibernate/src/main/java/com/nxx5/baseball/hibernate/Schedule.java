@@ -10,6 +10,8 @@ import org.hibernate.annotations.CascadeType;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.Objects;
+
 
 @Getter @Setter @NoArgsConstructor @RequiredArgsConstructor @EqualsAndHashCode
 @Entity(name = "schedule")
@@ -57,14 +59,17 @@ public class Schedule {
 
     @ManyToOne
     @Cascade(CascadeType.MERGE)
+    @EqualsAndHashCode.Exclude
     private Team awayTeam;
 
     @ManyToOne
     @Cascade(CascadeType.MERGE)
+    @EqualsAndHashCode.Exclude
     private Team homeTeam;
 
     @ManyToOne
     @Cascade(CascadeType.MERGE)
+    @EqualsAndHashCode.Exclude
     private Venue venue;
 
     @Column
@@ -120,5 +125,35 @@ public class Schedule {
 
     @Column
     private String ifNecessaryDescription;
+
+    @EqualsAndHashCode.Include
+    private Long awayId(){
+        if(Objects.isNull(awayTeam)){
+            return null;
+        }
+        else {
+            return awayTeam.getId();
+        }
+    }
+
+    @EqualsAndHashCode.Include
+    private Long homeId(){
+        if(Objects.isNull(homeTeam)){
+            return null;
+        }
+        else {
+            return homeTeam.getId();
+        }
+    }
+
+    @EqualsAndHashCode.Include
+    private Long venueId(){
+        if(Objects.isNull(venue)){
+            return null;
+        }
+        else {
+            return venue.getId();
+        }
+    }
 
 }

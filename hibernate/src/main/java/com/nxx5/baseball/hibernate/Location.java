@@ -51,7 +51,7 @@ public class Location {
     @EqualsAndHashCode.Include
     private Long venueId(){
         if(Objects.isNull(venue)){
-            return -1L;
+            return null;
         }
         else {
             return venue.getId();
