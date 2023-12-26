@@ -878,6 +878,22 @@ public class TestGameFeed {
         assertNotNull(bsPositions);
         assertEquals(1, bsPositions.size());
         assertEquals(bsPosition, bsPositions.get(0));
+
+        assertNotNull(bsAway.batters());
+        assertEquals(List.of(543760L, 608369L, 694497L, 641598L, 673962L, 663993L, 641680L, 665750L, 608671L, 543135L, 547973L, 622250L), bsAway.batters());
+
+        assertNotNull(bsAway.pitchers());
+        assertEquals(List.of(543135L, 547973L, 622250L), bsAway.pitchers());
+
+        assertNotNull(bsAway.bench());
+        assertEquals(List.of(677649L, 543257L, 595978L, 669701L), bsAway.bench());
+
+        assertNotNull(bsAway.bullpen());
+        assertEquals(List.of(674003L, 656271L, 641540L, 592351L, 571760L, 600917L, 656756L, 527048L, 519293L, 608717L), bsAway.bullpen());
+
+        assertNotNull(bsAway.battingOrder());
+        assertEquals(List.of(543760L, 608369L, 694497L, 641598L, 673962L, 663993L, 641680L, 665750L, 608671L), bsAway.battingOrder());
+
     }
 
 
