@@ -847,6 +847,37 @@ public class TestGameFeed {
         assertEquals(0, fielding.passedBall());
         assertEquals(0, fielding.pickoffs());
 
+        BoxScorePlayers bsPlayers = bsAway.players();
+        assertNotNull(bsPlayers);
+        assertEquals(26, bsPlayers.size());
+
+        BoxScorePlayer bsPlayer = bsPlayers.get(641680L);
+        assertNotNull(bsPlayer);
+        assertEquals("28", bsPlayer.jerseyNumber());
+        assertEquals("700", bsPlayer.battingOrder());
+
+        Person bsPerson = bsPlayer.person();
+        assertNotNull(bsPerson);
+        assertEquals(641680, bsPerson.id());
+        assertEquals("Jonah Heim", bsPerson.fullName());
+        assertEquals("/api/v1/people/641680", bsPerson.link());
+
+        Position bsPosition = bsPlayer.position();
+        assertNotNull(bsPosition);
+        assertEquals("2", bsPosition.code());
+        assertEquals("Catcher", bsPosition.name());
+        assertEquals("Catcher", bsPosition.type());
+        assertEquals("C", bsPosition.abbreviation());
+
+        PlayerStatus bsStatus = bsPlayer.status();
+        assertNotNull(bsStatus);
+        assertEquals("A", bsStatus.code());
+        assertEquals("Active", bsStatus.description());
+
+        List<Position> bsPositions = bsPlayer.allPositions();
+        assertNotNull(bsPositions);
+        assertEquals(1, bsPositions.size());
+        assertEquals(bsPosition, bsPositions.get(0));
     }
 
 
