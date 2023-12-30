@@ -4,6 +4,7 @@ import com.nxx5.baseball.hibernate.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +12,7 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+
 
 public class TestHibernate {
 
@@ -41,147 +43,122 @@ public class TestHibernate {
         configuration.addAnnotatedClass(FieldInfo.class);
         configuration.addAnnotatedClass(Location.class);
         configuration.addAnnotatedClass(Timezone.class);
+        configuration.addAnnotatedClass(Division.class);
+        configuration.addAnnotatedClass(Game.class);
+        configuration.addAnnotatedClass(GameStatus.class);
+        configuration.addAnnotatedClass(GameType.class);
+        configuration.addAnnotatedClass(League.class);
+        configuration.addAnnotatedClass(Person.class);
+        configuration.addAnnotatedClass(Position.class);
+        configuration.addAnnotatedClass(ProbablePitchers.class);
+        configuration.addAnnotatedClass(SeasonDateInfo.class);
+        configuration.addAnnotatedClass(Sport.class);
+
 
         sessionFactory = configuration.buildSessionFactory();
 
     }
 
-    public static Venue createVenue(){
-        Venue v = new Venue(15L);
-        v.setName("Chase Field");
-        v.setLink("/api/v1/venues/15");
-        v.setActive(true);
-        v.setSeason(2023L);
-        return v;
-    }
-
-    public static Location createLocation(){
-        return createLocation(null);
-    }
-
-    public static Location createLocation(Venue v){
-        Location location = new Location();
-        location.setAddress1("401 East Jefferson Street");
-        location.setCity("Phoenix");
-        location.setState("Arizona");
-        location.setStateAbbrev("AZ");
-        location.setPostalCode("85004");
-        location.setLatitude(33.445302);
-        location.setLongitude(-112.066687);
-        location.setAzimuthAngle(0.0);
-        location.setElevation(1086.0);
-        location.setCountry("USA");
-        location.setPhone("(602) 462-6500");
-
-        if(Objects.nonNull(v)){
-            location.setVenue(v);
-        }
-
-        return location;
-    }
-
-    public static FieldInfo createFieldInfo(){
-        return createFieldInfo(null);
-    }
-
-    public static FieldInfo createFieldInfo(Venue v){
-        FieldInfo fieldInfo = new FieldInfo();
-        fieldInfo.setCapacity(48359L);
-        fieldInfo.setTurfType("Artificial Turf");
-        fieldInfo.setRoofType("Retractable");
-        fieldInfo.setLeftLine(328L);
-        fieldInfo.setLeftField(376L);
-        fieldInfo.setLeftCenter(412L);
-        fieldInfo.setCenterField(407L);
-        fieldInfo.setRightCenter(414L);
-        fieldInfo.setRightField(376L);
-        fieldInfo.setRightLine(335L);
-
-        if(Objects.nonNull(v)){
-            fieldInfo.setVenue(v);
-        }
-
-        return fieldInfo;
-    }
-
-    public static Timezone createTimezone(){
-        Timezone timezone = new Timezone();
-        timezone.setId("America/Phoenix");
-        timezone.setTzOffset(-7L);
-        timezone.setOffsetAtGameTime(-7L);
-        timezone.setTz("MST");
-        return timezone;
-    }
-
+//    @AfterEach
+//    public void cleanup(){
+//        Transaction transaction = sessionFactory.getCurrentSession().beginTransaction();
+//        sessionFactory.getCurrentSession().tra
+//        transaction.commit();
+//    }
 
     @Test
     public void testSchedule(){
 
         Transaction transaction = sessionFactory.getCurrentSession().beginTransaction();
         assertNull(sessionFactory.getCurrentSession().get(Schedule.class, 748534L));
-        transaction.commit();
-
-        transaction = sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().merge(Helpers.createSchedule());
-        transaction.commit();
-
-        transaction = sessionFactory.getCurrentSession().beginTransaction();
         assertEquals(Helpers.createSchedule(), sessionFactory.getCurrentSession().get(Schedule.class, 748534L));
-        transaction.commit();
+        transaction.rollback();
     }
 
     @Test
     public void testVenue(){
 
         Transaction transaction = sessionFactory.getCurrentSession().beginTransaction();
+
         assertNull(sessionFactory.getCurrentSession().get(Venue.class, 15L));
-        transaction.commit();
+        sessionFactory.getCurrentSession().merge(Helpers.createVenue());
+        assertEquals(Helpers.createVenue(), sessionFactory.getCurrentSession().get(Venue.class, 15L));
 
-        transaction = sessionFactory.getCurrentSession().beginTransaction();
-        sessionFactory.getCurrentSession().merge(createVenue());
-        transaction.commit();
-
-        transaction = sessionFactory.getCurrentSession().beginTransaction();
-        assertEquals(createVenue(), sessionFactory.getCurrentSession().get(Venue.class, 15L));
-        transaction.commit();
-
-        transaction = sessionFactory.getCurrentSession().beginTransaction();
-        Venue v = createVenue();
-        v.setLocation(createLocation());
+        Venue v = Helpers.createVenue();
+        v.setLocation(Helpers.createLocation());
         sessionFactory.getCurrentSession().merge(v);
-        transaction.commit();
 
-        transaction = sessionFactory.getCurrentSession().beginTransaction();
         Location location = sessionFactory.getCurrentSession().get(Location.class, 15L);
-        assertEquals(createLocation(v), location);
-        transaction.commit();
+        assertEquals(Helpers.createLocation(v), location);
 
-        transaction = sessionFactory.getCurrentSession().beginTransaction();
-        v.setFieldInfo(createFieldInfo());
+        v.setFieldInfo(Helpers.createFieldInfo());
         sessionFactory.getCurrentSession().merge(v);
-        transaction.commit();
 
-        transaction = sessionFactory.getCurrentSession().beginTransaction();
         FieldInfo fieldInfo = sessionFactory.getCurrentSession().get(FieldInfo.class, 15L);
-        assertEquals(createFieldInfo(v), fieldInfo);
-        transaction.commit();
+        assertEquals(Helpers.createFieldInfo(v), fieldInfo);
 
-        transaction = sessionFactory.getCurrentSession().beginTransaction();
-        v.setTimezone(createTimezone());
+        v.setTimezone(Helpers.createTimezone());
         sessionFactory.getCurrentSession().merge(v);
-        transaction.commit();
 
-        transaction = sessionFactory.getCurrentSession().beginTransaction();
         Timezone timezone = sessionFactory.getCurrentSession().get(Timezone.class, "America/Phoenix");
-        assertEquals(createTimezone(), timezone);
-        transaction.commit();
+        assertEquals(Helpers.createTimezone(), timezone);
 
-        transaction = sessionFactory.getCurrentSession().beginTransaction();
         Venue persisted = sessionFactory.getCurrentSession().get(Venue.class, 15L);
         assertEquals(location, persisted.getLocation());
         assertEquals(fieldInfo, persisted.getFieldInfo());
         assertEquals(timezone, persisted.getTimezone());
-        transaction.commit();
+
+        transaction.rollback();
+
+    }
+
+    @Test
+    public void testGame(){
+        Game game = Helpers.createGame();
+        ProbablePitchers pp = Helpers.createProbablePitchers();
+
+        Transaction transaction = sessionFactory.getCurrentSession().beginTransaction();
+        assertNull(sessionFactory.getCurrentSession().get(Game.class, game.getGamePk()));
+        assertNull(sessionFactory.getCurrentSession().get(Team.class, game.getAway().getLeague().getId()));
+        assertNull(sessionFactory.getCurrentSession().get(Team.class, game.getAway().getSpringLeague().getId()));
+        assertNull(sessionFactory.getCurrentSession().get(Team.class, game.getAway().getDivision().getId()));
+        assertNull(sessionFactory.getCurrentSession().get(Team.class, game.getAway().getVenue().getId()));
+        assertNull(sessionFactory.getCurrentSession().get(Team.class, game.getAway().getId()));
+        assertNull(sessionFactory.getCurrentSession().get(Team.class, game.getHome().getLeague().getId()));
+        assertNull(sessionFactory.getCurrentSession().get(Team.class, game.getHome().getSpringLeague().getId()));
+        assertNull(sessionFactory.getCurrentSession().get(Team.class, game.getHome().getDivision().getId()));
+        assertNull(sessionFactory.getCurrentSession().get(Team.class, game.getHome().getId()));
+        assertNull(sessionFactory.getCurrentSession().get(Venue.class, game.getVenue().getId()));
+        assertNull(sessionFactory.getCurrentSession().get(ProbablePitchers.class, pp.getGame().getGamePk()));
+
+        sessionFactory.getCurrentSession().merge(game.getAway().getLeague());
+        sessionFactory.getCurrentSession().merge(game.getAway().getSpringLeague());
+        sessionFactory.getCurrentSession().merge(game.getAway().getDivision());
+        sessionFactory.getCurrentSession().merge(game.getAway().getVenue());
+        sessionFactory.getCurrentSession().merge(game.getAway().getSpringVenue());
+        sessionFactory.getCurrentSession().merge(game.getAway());
+
+        sessionFactory.getCurrentSession().merge(game.getHome().getLeague());
+        sessionFactory.getCurrentSession().merge(game.getHome().getSpringLeague());
+        sessionFactory.getCurrentSession().merge(game.getHome().getDivision());
+        sessionFactory.getCurrentSession().merge(game.getHome().getVenue());
+        sessionFactory.getCurrentSession().merge(game.getHome().getSpringVenue());
+        sessionFactory.getCurrentSession().merge(game.getHome());
+
+        sessionFactory.getCurrentSession().merge(game.getStatus());
+        sessionFactory.getCurrentSession().merge(game.getType());
+
+        sessionFactory.getCurrentSession().merge(game);
+
+        sessionFactory.getCurrentSession().merge(pp.getHome());
+        sessionFactory.getCurrentSession().merge(pp.getAway());
+        sessionFactory.getCurrentSession().merge(pp);
+
+        assertEquals(pp, sessionFactory.getCurrentSession().get(ProbablePitchers.class, 748534L));
+
+        assertEquals(game, sessionFactory.getCurrentSession().get(Game.class, 748534L));
+        transaction.rollback();
 
     }
 

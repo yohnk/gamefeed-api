@@ -83,7 +83,7 @@
                     "name": "American League West",
                     "link": "/api/v1/divisions/200"
                 },
-                "sport": {
+                "bench": {
                     "id": 1,
                     "link": "/api/v1/sports/1",
                     "name": "Major League Baseball"

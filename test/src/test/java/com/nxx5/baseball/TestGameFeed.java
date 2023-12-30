@@ -220,7 +220,7 @@ public class TestGameFeed {
         assertEquals("American League West", division.name());
         assertEquals("/api/v1/divisions/200", division.link());
 
-        sport = away.sport();
+        sport = home.sport();
         assertNotNull(sport);
         assertEquals(1L, sport.id());
         assertEquals("/api/v1/sports/1", sport.link());

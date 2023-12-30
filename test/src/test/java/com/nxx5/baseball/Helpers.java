@@ -1,12 +1,12 @@
 package com.nxx5.baseball;
 
-import com.nxx5.baseball.hibernate.Schedule;
-import com.nxx5.baseball.hibernate.Team;
-import com.nxx5.baseball.hibernate.Venue;
+import com.nxx5.baseball.hibernate.*;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Objects;
 
 public class Helpers {
 
@@ -47,6 +47,287 @@ public class Helpers {
         s.setIfNecessaryDescription("Normal Game");
 
         return s;
+    }
+
+    public static Team createAwayTeam(){
+        Team team = new Team();
+
+        League springLeague = new League();
+        springLeague.setId(114L);
+        springLeague.setName("Cactus League");
+        springLeague.setLink("/api/v1/league/114");
+        springLeague.setAbbreviation("CL");
+        team.setSpringLeague(springLeague);
+
+        team.setAllStarStatus(false);
+        team.setId(140L);
+        team.setName("Texas Rangers");
+        team.setLink("/api/v1/teams/140");
+        team.setSeasons(2023L);
+
+        Venue venue = new Venue();
+        venue.setId(5325L);
+        venue.setName("Globe Life Field");
+        venue.setLink("/api/v1/venues/5325");
+        team.setVenue(venue);
+
+        Venue springVenue = new Venue();
+        springVenue.setId(2603L);
+        springVenue.setLink("/api/v1/venues/2603");
+        team.setSpringVenue(springVenue);
+
+        team.setTeamCode("tex");
+        team.setFileCode("tex");
+        team.setAbbreviation("TEX");
+        team.setTeamName("Rangers");
+        team.setLocationName("Arlington");
+        team.setFirstYearOfPlay(1961L);
+
+        League league = new League();
+        league.setId(103L);
+        league.setName("American League");
+        league.setLink("/api/v1/league/103");
+        team.setLeague(league);
+
+        Division division = new Division();
+        division.setId(200L);
+        division.setName("American League West");
+        division.setLink("/api/v1/divisions/200");
+        team.setDivision(division);
+
+        team.setShortName("Texas");
+        team.setFranchiseName("Texas");
+        team.setClubName("Rangers");
+        team.setActive(true);
+
+        return team;
+    }
+
+    public static Team createHomeTeam(){
+        Team team = new Team();
+
+        League springLeague = new League();
+        springLeague.setId(114L);
+        springLeague.setName("Cactus League");
+        springLeague.setLink("/api/v1/league/114");
+        springLeague.setAbbreviation("CL");
+        team.setSpringLeague(springLeague);
+
+        team.setAllStarStatus(false);
+        team.setId(109L);
+        team.setName("Arizona Diamondbacks");
+        team.setLink("/api/v1/teams/109");
+        team.setSeasons(2023L);
+
+        Venue venue = new Venue();
+        venue.setId(15L);
+        venue.setName("Chase Field");
+        venue.setLink("/api/v1/venues/15");
+        team.setVenue(venue);
+
+        Venue springVenue = new Venue();
+        springVenue.setId(4249L);
+        springVenue.setLink("/api/v1/venues/4249");
+        team.setSpringVenue(springVenue);
+
+        team.setTeamCode("ari");
+        team.setFileCode("ari");
+        team.setAbbreviation("AZ");
+        team.setTeamName("D-backs");
+        team.setLocationName("Phoenix");
+        team.setFirstYearOfPlay(1996L);
+
+        League league = new League();
+        league.setId(104L);
+        league.setName("National League");
+        league.setLink("/api/v1/league/104");
+        team.setLeague(league);
+
+        Division division = new Division();
+        division.setId(203L);
+        division.setName("National League West");
+        division.setLink("/api/v1/divisions/203");
+        team.setDivision(division);
+
+        team.setShortName("Arizona");
+        team.setFranchiseName("Arizona");
+        team.setClubName("Diamondbacks");
+        team.setActive(true);
+
+        return team;
+    }
+
+    public static Venue createFullVenue(){
+        Venue v = new Venue();
+        v.setId(15L);
+        v.setName("Chase Field");
+        v.setLink("/api/v1/venues/15");
+
+        Location l = new Location();
+        l.setAddress1("401 East Jefferson Street");
+        l.setCity("Phoenix");
+        l.setState("Arizona");
+        l.setStateAbbrev("AZ");
+        l.setPostalCode("85004");
+        l.setLatitude(33.445302);
+        l.setLongitude(-112.066687);
+        l.setAzimuthAngle(0.0);
+        l.setElevation(1086.0);
+        l.setCountry("USA");
+        l.setPhone("(602) 462-6500");
+        v.setLocation(l);
+
+        Timezone t = new Timezone();
+        t.setId("America/Phoenix");
+        t.setTzOffset(-7L);
+        t.setOffsetAtGameTime(-7L);
+        t.setTz("MST");
+        v.setTimezone(t);
+
+        FieldInfo f = new FieldInfo();
+        f.setCapacity(48359L);
+        f.setTurfType("Artificial Turf");
+        f.setRoofType("Retractable");
+        f.setLeftLine(328L);
+        f.setLeftField(376L);
+        f.setLeftCenter(412L);
+        f.setCenterField(407L);
+        f.setRightCenter(414L);
+        f.setRightField(376L);
+        f.setRightLine(335L);
+        v.setFieldInfo(f);
+
+        v.setActive(true);
+        v.setSeason(2023L);
+
+        return v;
+    }
+
+    public static Game createGame(){
+        Game game = new Game();
+
+        game.setGamePk(748534L);
+        game.setType(new GameType("W"));
+        game.setDoubleHeader(false);
+        game.setTiebreaker(false);
+        game.setGameNumber(1L);
+        game.setSeason(2023L);
+        game.setSeasonDisplay("2023");
+        game.setDateTime(OffsetDateTime.of(2023, 11, 2, 0, 3, 0, 0, ZoneOffset.UTC));
+        game.setOriginalDate(LocalDate.of(2023, 11, 1));
+        game.setOfficialDate(LocalDate.of(2023, 11, 1));
+
+        GameStatus status = new GameStatus();
+        status.setAbstractGameState("Final");
+        status.setCodedGameState("F");
+        status.setDetailedState("Final");
+        status.setStatusCode("F");
+        status.setStartTimeTBD(false);
+        status.setAbstractGameCode("F");
+
+        game.setStatus(status);
+
+        game.setAway(createAwayTeam());
+        game.setHome(createHomeTeam());
+        game.setVenue(createFullVenue());
+
+        game.setCondition("Clear");
+        game.setTemp(79L);
+        game.setWind("1 mph, Varies");
+
+        game.setAttendance(48511L);
+        game.setFirstPitch(OffsetDateTime.of(2023, 11, 2, 0, 6, 0, 0, ZoneOffset.UTC));
+
+        return game;
+    }
+
+    public static ProbablePitchers createProbablePitchers(){
+        Person away = new Person();
+        away.setId(543135L);
+        away.setFullName("Nathan Eovaldi");
+        away.setLink("/api/v1/people/543135");
+
+        Person home = new Person();
+        home.setId(668678L);
+        home.setFullName("Zac Gallen");
+        home.setLink("/api/v1/people/668678");
+
+        Game game = new Game();
+        game.setGamePk(748534L);
+
+        ProbablePitchers pp = new ProbablePitchers();
+        pp.setAway(away);
+        pp.setHome(home);
+        pp.setGame(game);
+
+        return pp;
+    }
+
+    public static Venue createVenue(){
+        Venue v = new Venue(15L);
+        v.setName("Chase Field");
+        v.setLink("/api/v1/venues/15");
+        v.setActive(true);
+        v.setSeason(2023L);
+        return v;
+    }
+
+    public static Location createLocation(){
+        return createLocation(null);
+    }
+
+    public static Location createLocation(Venue v){
+        Location location = new Location();
+        location.setAddress1("401 East Jefferson Street");
+        location.setCity("Phoenix");
+        location.setState("Arizona");
+        location.setStateAbbrev("AZ");
+        location.setPostalCode("85004");
+        location.setLatitude(33.445302);
+        location.setLongitude(-112.066687);
+        location.setAzimuthAngle(0.0);
+        location.setElevation(1086.0);
+        location.setCountry("USA");
+        location.setPhone("(602) 462-6500");
+
+        if(Objects.nonNull(v)){
+            location.setVenue(v);
+        }
+
+        return location;
+    }
+
+    public static FieldInfo createFieldInfo(){
+        return createFieldInfo(null);
+    }
+
+    public static FieldInfo createFieldInfo(Venue v){
+        FieldInfo fieldInfo = new FieldInfo();
+        fieldInfo.setCapacity(48359L);
+        fieldInfo.setTurfType("Artificial Turf");
+        fieldInfo.setRoofType("Retractable");
+        fieldInfo.setLeftLine(328L);
+        fieldInfo.setLeftField(376L);
+        fieldInfo.setLeftCenter(412L);
+        fieldInfo.setCenterField(407L);
+        fieldInfo.setRightCenter(414L);
+        fieldInfo.setRightField(376L);
+        fieldInfo.setRightLine(335L);
+
+        if(Objects.nonNull(v)){
+            fieldInfo.setVenue(v);
+        }
+
+        return fieldInfo;
+    }
+
+    public static Timezone createTimezone(){
+        Timezone timezone = new Timezone();
+        timezone.setId("America/Phoenix");
+        timezone.setTzOffset(-7L);
+        timezone.setOffsetAtGameTime(-7L);
+        timezone.setTz("MST");
+        return timezone;
     }
 
 }
