@@ -47,12 +47,7 @@ public class FieldInfo {
 
     @EqualsAndHashCode.Include
     private Long venueId(){
-        if(Objects.isNull(venue)){
-            return null;
-        }
-        else {
-            return venue.getId();
-        }
+        return venue == null ? null : venue.getId();
     }
 
     public void setVenue(Venue venue) {

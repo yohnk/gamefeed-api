@@ -83,51 +83,26 @@ public class Game {
 
     @EqualsAndHashCode.Include
     private Long venueId(){
-        if(Objects.isNull(venue)){
-            return null;
-        }
-        else {
-            return venue.getId();
-        }
+        return venue == null ? null : venue.getId();
     }
 
     @EqualsAndHashCode.Include
     private Long awayId(){
-        if(Objects.isNull(away)){
-            return null;
-        }
-        else {
-            return away.getId();
-        }
+        return away == null ? null : away.getId();
     }
 
     @EqualsAndHashCode.Include
     private Long homeId(){
-        if(Objects.isNull(home)){
-            return null;
-        }
-        else {
-            return home.getId();
-        }
+        return home == null ? null : home.getId();
     }
 
     @EqualsAndHashCode.Include
     private String statusId(){
-        if(Objects.isNull(status)){
-            return null;
-        }
-        else {
-            return status.getStatusCode();
-        }
+        return status == null ? null : status.getStatusCode();
     }
 
     @EqualsAndHashCode.Include
     private String typeId(){
-        if(Objects.isNull(type)){
-            return null;
-        }
-        else {
-            return type.getId();
-        }
+        return type == null ? null : type.getId();
     }
 }

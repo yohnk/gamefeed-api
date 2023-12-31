@@ -30,32 +30,17 @@ public class ProbablePitchers {
 
     @EqualsAndHashCode.Include
     private Long gameId(){
-        if(Objects.isNull(game)){
-            return null;
-        }
-        else {
-            return game.getGamePk();
-        }
+        return game == null ? null : game.getGamePk();
     }
 
     @EqualsAndHashCode.Include
     private Long awayId(){
-        if(Objects.isNull(away)){
-            return null;
-        }
-        else {
-            return away.getId();
-        }
+        return away == null ? null : away.getId();
     }
 
     @EqualsAndHashCode.Include
     private Long homeId(){
-        if(Objects.isNull(home)){
-            return null;
-        }
-        else {
-            return home.getId();
-        }
+        return home == null ? null : home.getId();
     }
 
 }

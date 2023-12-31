@@ -80,41 +80,21 @@ public class Team {
     //TODO - Cleanup
     @EqualsAndHashCode.Include
     public Long getLeagueId(){
-        if(Objects.nonNull(league)){
-            return league.getId();
-        }
-        else {
-            return null;
-        }
+        return league == null ? null : league.getId();
     }
 
     @EqualsAndHashCode.Include
     public Long getSpringLeagueId(){
-        if(Objects.nonNull(springLeague)){
-            return springLeague.getId();
-        }
-        else {
-            return null;
-        }
+        return springLeague == null ? null : springLeague.getId();
     }
 
     @EqualsAndHashCode.Include
     public Long getVenueId(){
-        if(Objects.nonNull(venue)){
-            return venue.getId();
-        }
-        else {
-            return null;
-        }
+        return venue == null ? null : venue.getId();
     }
 
     @EqualsAndHashCode.Include
     public Long getSportId(){
-        if(Objects.nonNull(sport)){
-            return sport.getId();
-        }
-        else {
-            return null;
-        }
+        return sport == null ? null : sport.getId();
     }
 }

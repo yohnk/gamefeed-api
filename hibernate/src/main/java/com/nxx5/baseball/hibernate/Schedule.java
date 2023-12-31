@@ -128,32 +128,17 @@ public class Schedule {
 
     @EqualsAndHashCode.Include
     private Long awayId(){
-        if(Objects.isNull(awayTeam)){
-            return null;
-        }
-        else {
-            return awayTeam.getId();
-        }
+        return awayTeam == null ? null : awayTeam.getId();
     }
 
     @EqualsAndHashCode.Include
     private Long homeId(){
-        if(Objects.isNull(homeTeam)){
-            return null;
-        }
-        else {
-            return homeTeam.getId();
-        }
+        return homeTeam == null ? null : homeTeam.getId();
     }
 
     @EqualsAndHashCode.Include
     private Long venueId(){
-        if(Objects.isNull(venue)){
-            return null;
-        }
-        else {
-            return venue.getId();
-        }
+        return venue == null ? null : venue.getId();
     }
 
 }
