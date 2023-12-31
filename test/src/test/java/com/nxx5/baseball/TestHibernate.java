@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,18 +54,14 @@ public class TestHibernate {
         configuration.addAnnotatedClass(ProbablePitchers.class);
         configuration.addAnnotatedClass(SeasonDateInfo.class);
         configuration.addAnnotatedClass(Sport.class);
+        configuration.addAnnotatedClass(Play.class);
+        configuration.addAnnotatedClass(Runner.class);
+        configuration.addAnnotatedClass(Credit.class);
 
 
         sessionFactory = configuration.buildSessionFactory();
 
     }
-
-//    @AfterEach
-//    public void cleanup(){
-//        Transaction transaction = sessionFactory.getCurrentSession().beginTransaction();
-//        sessionFactory.getCurrentSession().tra
-//        transaction.commit();
-//    }
 
     @Test
     public void testSchedule(){
@@ -158,6 +155,87 @@ public class TestHibernate {
         assertEquals(pp, sessionFactory.getCurrentSession().get(ProbablePitchers.class, 748534L));
 
         assertEquals(game, sessionFactory.getCurrentSession().get(Game.class, 748534L));
+        transaction.rollback();
+
+    }
+
+    @Test
+    public void testPlay(){
+        Play play = Helpers.createPlay();
+
+        Transaction transaction = sessionFactory.getCurrentSession().beginTransaction();
+
+        assertNull(sessionFactory.getCurrentSession().get(Play.class, new Play(play.getGame(), play.getAtBatIndex())));
+
+        sessionFactory.getCurrentSession().merge(play.getGame());
+        sessionFactory.getCurrentSession().merge(play.getBatter());
+        sessionFactory.getCurrentSession().merge(play.getPitcher());
+        sessionFactory.getCurrentSession().merge(play);
+
+        assertEquals(Helpers.createPlay(), sessionFactory.getCurrentSession().get(Play.class, play));
+
+        transaction.rollback();
+    }
+
+    @Test
+    public void testRunner(){
+        List<Runner> runners = Helpers.createRunners();
+
+        Transaction transaction = sessionFactory.getCurrentSession().beginTransaction();
+
+        for(Runner runner : runners){
+            assertNull(sessionFactory.getCurrentSession().get(Runner.class, new Runner(runner.getPlay(), runner.getRunner())));
+        }
+
+        Play play = runners.get(0).getPlay();
+        Game game = play.getGame();
+
+        sessionFactory.getCurrentSession().merge(game);
+        sessionFactory.getCurrentSession().merge(play);
+
+        for(Runner runner : runners){
+            sessionFactory.getCurrentSession().merge(runner.getRunner());
+            sessionFactory.getCurrentSession().merge(runner);
+        }
+
+        for(Runner runner : runners){
+            Runner fetched = sessionFactory.getCurrentSession().get(Runner.class, new Runner(runner.getPlay(), runner.getRunner()));
+            assertEquals(runner, fetched);
+        }
+
+        transaction.rollback();
+
+    }
+
+    @Test
+    public void testCredit(){
+        List<Credit> credits = Helpers.createCredits();
+
+        Transaction transaction = sessionFactory.getCurrentSession().beginTransaction();
+
+        for(Credit credit : credits){
+            assertNull(sessionFactory.getCurrentSession().get(Credit.class, new Credit(credit.getRunner(), credit.getPlayer())));
+        }
+
+        Runner runner = credits.get(0).getRunner();
+        Play play = runner.getPlay();
+        Game game = play.getGame();
+
+        sessionFactory.getCurrentSession().merge(game);
+        sessionFactory.getCurrentSession().merge(play);
+        sessionFactory.getCurrentSession().merge(runner);
+
+        for(Credit credit : credits){
+            sessionFactory.getCurrentSession().merge(credit.getPlayer());
+            sessionFactory.getCurrentSession().merge(credit.getPosition());
+            sessionFactory.getCurrentSession().merge(credit);
+        }
+
+        for(Credit credit : credits){
+            Credit fetched = sessionFactory.getCurrentSession().get(Credit.class, new Credit(credit.getRunner(), credit.getPlayer()));
+            assertEquals(credit, fetched);
+        }
+
         transaction.rollback();
 
     }

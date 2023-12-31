@@ -6,6 +6,7 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Objects;
 
 public class Helpers {
@@ -328,6 +329,127 @@ public class Helpers {
         timezone.setOffsetAtGameTime(-7L);
         timezone.setTz("MST");
         return timezone;
+    }
+
+    public static Play createPlay(){
+        Play play = new Play();
+
+        Game game = new Game();
+        game.setGamePk(748534L);
+        play.setGame(game);
+
+        play.setType("atBat");
+        play.setEvent("Walk");
+        play.setEventType("walk");
+        play.setDescription("Ketel Marte walks.   Corbin Carroll to 2nd.");
+        play.setRbi(0L);
+        play.setAwayScore(0L);
+        play.setHomeScore(0L);
+        play.setIsOut(false);
+        play.setAtBatIndex(19L);
+        play.setHalfInning("bottom");
+        play.setIsTopInning(false);
+        play.setInning(3L);
+        play.setStartTime(OffsetDateTime.of(2023, 11, 2, 0, 47, 11, 176, ZoneOffset.UTC));
+        play.setEndTime(OffsetDateTime.of(2023, 11, 2, 0, 48, 52, 601, ZoneOffset.UTC));
+        play.setIsComplete(true);
+        play.setIsScoringPlay(false);
+        play.setHasReview(false);
+        play.setHasOut(false);
+        play.setCaptivatingIndex(0L);
+        play.setBalls(4L);
+        play.setStrikes(0L);
+        play.setOuts(0L);
+
+        Person batter = new Person();
+        batter.setId(606466L);
+        play.setBatter(batter);
+
+        Person pitcher = new Person();
+        pitcher.setId(543135L);
+        play.setPitcher(pitcher);
+
+        return play;
+    }
+
+    public static List<Runner> createRunners(){
+
+        Play play = new Play();
+        Game game = new Game();
+        game.setGamePk(748534L);
+        play.setGame(game);
+        play.setAtBatIndex(19L);
+
+        Runner r1 = new Runner();
+        r1.setPlay(play);
+        r1.setOriginBase("1B");
+        r1.setStart("1B");
+        r1.setEnd("2B");
+        r1.setIsOut(false);
+        r1.setEvent("Walk");
+        r1.setEventType("walk");
+        r1.setMovementReason("r_adv_force");
+        Person runner1 = new Person();
+        runner1.setId(682998L);
+        r1.setRunner(runner1);
+        r1.setIsScoringEvent(false);
+        r1.setRbi(false);
+        r1.setEarned(false);
+        r1.setTeamUnearned(false);
+        r1.setPlayIndex(4L);
+
+        Runner r2 = new Runner();
+        r2.setPlay(play);
+        r2.setEnd("1B");
+        r2.setIsOut(false);
+        r2.setEvent("Walk");
+        r2.setEventType("walk");
+        Person runner2 = new Person();
+        runner2.setId(606466L);
+        r2.setRunner(runner2);
+        r2.setIsScoringEvent(false);
+        r2.setRbi(false);
+        r2.setEarned(false);
+        r2.setTeamUnearned(false);
+        r2.setPlayIndex(4L);
+
+        return List.of(r1, r2);
+    }
+
+    public static List<Credit> createCredits(){
+        Play play = new Play();
+        Game game = new Game();
+        Runner runner = new Runner();
+        Person person = new Person();
+        person.setId(502054L);
+
+        game.setGamePk(748534L);
+        play.setGame(game);
+        play.setAtBatIndex(22L);
+        runner.setPlay(play);
+        runner.setRunner(person);
+
+        Credit c1 = new Credit();
+        c1.setRunner(runner);
+        Person c1p = new Person();
+        c1p.setId(608369L);
+        c1.setPlayer(c1p);
+        Position p1 = new Position();
+        p1.setCode("6");
+        c1.setPosition(p1);
+        c1.setCredit("f_assist");
+
+        Credit c2 = new Credit();
+        c2.setRunner(runner);
+        Person c2p = new Person();
+        c2p.setId(663993L);
+        c2.setPlayer(c2p);
+        Position p2 = new Position();
+        p2.setCode("3");
+        c2.setPosition(p2);
+        c2.setCredit("f_putout");
+
+        return List.of(c1, c2);
     }
 
 }
