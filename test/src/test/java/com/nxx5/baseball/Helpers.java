@@ -452,4 +452,119 @@ public class Helpers {
         return List.of(c1, c2);
     }
 
+    public static List<Event> createEvents(){
+        //TODO - Keys
+        Game game = new Game();
+        game.setGamePk(748534L);
+
+        Play play = new Play();
+        play.setGame(game);
+        play.setAtBatIndex(50L);
+
+        Event e1 = new Event();
+        e1.setPlay(play);
+        e1.setDescription("Mound Visit.");
+        e1.setEvent("Mount Visit");
+        e1.setAwayScore(1L);
+        e1.setHomeScore(0L);
+        e1.setIsScoringPlay(false);
+        e1.setIsOut(false);
+        e1.setHasReview(false);
+        e1.setBalls(0L);
+        e1.setStrikes(0L);
+        e1.setOuts(1L);
+        e1.setIndex(0L);
+        e1.setStartTime(OffsetDateTime.of(2023, 11, 2, 1, 59, 55, 469, ZoneOffset.UTC));
+        e1.setEndTime(OffsetDateTime.of(2023, 11, 2, 2, 0, 40, 800, ZoneOffset.UTC));
+        e1.setIsPitch(false);
+        e1.setType("action");
+
+        Event e2 = new Event();
+        e2.setPlay(play);
+        e2.setDescription("Pitching Change: Kevin Ginkel replaces Zac Gallen.");
+        e2.setEvent("Pitching Substitution");
+        e2.setEventType("pitching_substitution");
+        e2.setAwayScore(1L);
+        e2.setHomeScore(0L);
+        e2.setAwayScore(1L);
+        e2.setHomeScore(0L);
+        e2.setIsScoringPlay(false);
+        e2.setIsOut(false);
+        e2.setHasReview(false);
+        e2.setBalls(0L);
+        e2.setStrikes(0L);
+        e2.setOuts(1L);
+        e2.setIndex(1L);
+        e2.setStartTime(OffsetDateTime.of(2023, 11, 2, 2, 0, 40, 800, ZoneOffset.UTC));
+        e2.setEndTime(OffsetDateTime.of(2023, 11, 2, 2, 3, 3, 707, ZoneOffset.UTC));
+        e2.setIsPitch(false);
+        e2.setIsSubstitution(true);
+        e2.setType("action");
+
+        Person player = new Person();
+        player.setId(656464L);
+        e2.setPlayer(player);
+
+        Position position = new Position();
+        position.setCode("1");
+        e2.setPosition(position);
+
+        Event e3 = new Event();
+        e3.setPlay(play);
+        e3.setCallCode("B");
+        e3.setCallDescription("Ball");
+        e3.setDescription("Ball");
+        e3.setCode("B");
+        e3.setIsInPlay(false);
+        e3.setIsStrike(false);
+        e3.setIsBall(true);
+        e3.setPitchCode("FF");
+        e3.setPitchDescription("Four-Seam Fastball");
+        e3.setIsOut(false);
+        e3.setHasReview(false);
+        e3.setBalls(1L);
+        e3.setStrikes(0L);
+        e3.setOuts(1L);
+        e3.setStartSpeed(95.6);
+        e3.setEndSpeed(86.8);
+        e3.setStrikeZoneTop(3.57766939176536);
+        e3.setStrikeZoneBottom(1.6808013671999);
+        e3.setAY(32.93552022471541);
+        e3.setAZ(-16.21682988278894);
+        e3.setPfxX(-4.929628813368872);
+        e3.setPfxZ(8.2237849271907);
+        e3.setPX(0.5850466968357034);
+        e3.setPZ(3.7251815992892547);
+        e3.setVX0(9.226940295181011);
+        e3.setVY0(-138.84790476986672);
+        e3.setVZ0(-3.7885089394994553);
+        e3.setX(94.7);
+        e3.setY(138.2);
+        e3.setX0(-2.1502397247864065);
+        e3.setY0(50.00199776629153);
+        e3.setZ0(6.195885241771316);
+        e3.setAX(-9.565230502980956);
+        e3.setBreakAngle(24.0);
+        e3.setBreakLength(3.6);
+        e3.setBreakY(24.0);
+        e3.setBreakVertical(-16.0);
+        e3.setBreakVerticalInduced(14.2);
+        e3.setBreakHorizontal(6.8);
+        e3.setSpinRate(2488.0);
+        e3.setSpinDirection(222.0);
+        e3.setZone(12L);
+        e3.setTypeConfidence(0.92);
+        e3.setPlateTime(0.3954467429462043);
+        e3.setExtension(6.909284718878651);
+        e3.setIndex(2L);
+        e3.setPlayId("de33d49e-2ff0-43bd-868c-3a6f2994d124");
+        e3.setPitchNumber(1L);
+        e3.setStartTime(OffsetDateTime.of(2023, 11, 2, 2, 3, 3, 707, ZoneOffset.UTC));
+        e3.setEndTime(OffsetDateTime.of(2023, 11, 2, 2, 3, 7, 462, ZoneOffset.UTC));
+        e3.setIsPitch(true);
+        e3.setType("pitch");
+
+        return List.of(e1, e2, e3);
+    }
+
 }

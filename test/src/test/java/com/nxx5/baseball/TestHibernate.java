@@ -57,6 +57,7 @@ public class TestHibernate {
         configuration.addAnnotatedClass(Play.class);
         configuration.addAnnotatedClass(Runner.class);
         configuration.addAnnotatedClass(Credit.class);
+        configuration.addAnnotatedClass(Event.class);
 
 
         sessionFactory = configuration.buildSessionFactory();
@@ -237,7 +238,40 @@ public class TestHibernate {
         }
 
         transaction.rollback();
+    }
 
+    @Test
+    public void testEvent(){
+        List<Event> events = Helpers.createEvents();
+
+        Transaction transaction = sessionFactory.getCurrentSession().beginTransaction();
+
+        for(Event event : events){
+            assertNull(sessionFactory.getCurrentSession().get(Event.class, new Event(event.getPlay(), event.getIndex())));
+        }
+
+        Play play = events.get(0).getPlay();
+        Game game = play.getGame();
+
+        sessionFactory.getCurrentSession().merge(game);
+        sessionFactory.getCurrentSession().merge(play);
+
+        for(Event event : events){
+            if(event.getPlayer() != null){
+                sessionFactory.getCurrentSession().merge(event.getPlayer());
+            }
+            if(event.getPosition() != null){
+                sessionFactory.getCurrentSession().merge(event.getPosition());
+            }
+
+            sessionFactory.getCurrentSession().merge(event);
+        }
+
+        for(Event event : events){
+            assertEquals(event, sessionFactory.getCurrentSession().get(Event.class, new Event(event.getPlay(), event.getIndex())));
+        }
+
+        transaction.rollback();
     }
 
 }
