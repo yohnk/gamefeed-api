@@ -1,4 +1,4 @@
-package com.nxx5.baseball.hibernate;
+package com.nxx5.baseball.jpa;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,8 +12,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
-@Entity(name = "pitcher")
-public class Pitcher {
+@Entity(name = "batter")
+public class Batter {
 
     @Id
     @ManyToOne
@@ -44,5 +44,6 @@ public class Pitcher {
     public Long teamId(){
         return team == null ? null : team.getId();
     }
+
 
 }

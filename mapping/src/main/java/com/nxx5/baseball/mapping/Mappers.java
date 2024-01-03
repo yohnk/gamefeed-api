@@ -1,7 +1,7 @@
 package com.nxx5.baseball.mapping;
 
-import com.nxx5.baseball.hibernate.Schedule;
-import com.nxx5.baseball.hibernate.Team;
+import com.nxx5.baseball.jpa.Schedule;
+import com.nxx5.baseball.jpa.Team;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.nxx5.baseball.records.ScheduledGame;

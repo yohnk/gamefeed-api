@@ -1,7 +1,7 @@
 package com.nxx5.baseball;
 
 import com.google.gson.Gson;
-import com.nxx5.baseball.hibernate.Schedule;
+import com.nxx5.baseball.jpa.Schedule;
 import com.nxx5.baseball.mapping.Mappers;
 import org.junit.jupiter.api.Test;
 import org.nxx5.baseball.gson.GsonBuild;

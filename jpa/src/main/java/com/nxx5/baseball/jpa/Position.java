@@ -1,4 +1,4 @@
-package com.nxx5.baseball.hibernate;
+package com.nxx5.baseball.jpa;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,28 +12,18 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
-@Entity(name = "sport")
-public class Sport {
+@Entity(name = "position")
+public class Position {
 
     @Id
-    private Long id;
-
-    @Column
     private String code;
-
-    @Column
-    private String link;
 
     @Column
     private String name;
 
     @Column
+    private String type;
+
+    @Column
     private String abbreviation;
-
-    @Column
-    private Long sortOrder;
-
-    @Column
-    private Boolean activeStatus;
-
 }

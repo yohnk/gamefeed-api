@@ -1,6 +1,6 @@
 package com.nxx5.baseball;
 
-import com.nxx5.baseball.hibernate.*;
+import com.nxx5.baseball.jpa.*;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;

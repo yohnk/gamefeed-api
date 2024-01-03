@@ -1,4 +1,4 @@
-package com.nxx5.baseball.hibernate;
+package com.nxx5.baseball.jpa;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

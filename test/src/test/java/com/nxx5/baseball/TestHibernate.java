@@ -1,6 +1,6 @@
 package com.nxx5.baseball;
 
-import com.nxx5.baseball.hibernate.*;
+import com.nxx5.baseball.jpa.*;
 import jakarta.persistence.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
