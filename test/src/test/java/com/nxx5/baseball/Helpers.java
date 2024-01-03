@@ -2,7 +2,6 @@ package com.nxx5.baseball;
 
 import com.nxx5.baseball.hibernate.*;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;

@@ -2,6 +2,7 @@ package com.nxx5.baseball.hibernate;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.util.Objects;
 
 @Getter @Setter @NoArgsConstructor @RequiredArgsConstructor @EqualsAndHashCode
