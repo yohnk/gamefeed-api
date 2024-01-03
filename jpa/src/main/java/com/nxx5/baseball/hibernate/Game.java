@@ -2,8 +2,6 @@ package com.nxx5.baseball.hibernate;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;

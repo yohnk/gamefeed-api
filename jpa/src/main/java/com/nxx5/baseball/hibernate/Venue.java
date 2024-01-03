@@ -2,9 +2,6 @@ package com.nxx5.baseball.hibernate;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import java.util.Objects;
 
 @Getter @Setter @NoArgsConstructor @RequiredArgsConstructor @EqualsAndHashCode
@@ -27,16 +24,13 @@ public class Venue {
     @Column
     private Long season;
 
-    @OneToOne
-    @Cascade(CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.MERGE)
     private Location location;
 
-    @ManyToOne
-    @Cascade(CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Timezone timezone;
 
-    @OneToOne
-    @Cascade(CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.MERGE)
     private FieldInfo fieldInfo;
 
     public void setLocation(Location location) {

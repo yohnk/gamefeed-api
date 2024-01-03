@@ -14,7 +14,7 @@
     <module>records</module>
     <module>jackson</module>
     <module>test</module>
-    <module>hibernate</module>
+    <module>jpa</module>
       <module>mapping</module>
   </modules>
 

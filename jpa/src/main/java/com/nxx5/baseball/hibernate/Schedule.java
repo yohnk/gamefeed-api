@@ -1,12 +1,7 @@
 package com.nxx5.baseball.hibernate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -57,18 +52,15 @@ public class Schedule {
     @Column
     private String abstractGameCode;
 
-    @ManyToOne
-    @Cascade(CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @EqualsAndHashCode.Exclude
     private Team awayTeam;
 
-    @ManyToOne
-    @Cascade(CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @EqualsAndHashCode.Exclude
     private Team homeTeam;
 
-    @ManyToOne
-    @Cascade(CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @EqualsAndHashCode.Exclude
     private Venue venue;
 
