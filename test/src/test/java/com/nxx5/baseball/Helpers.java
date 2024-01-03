@@ -6,6 +6,7 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -453,7 +454,6 @@ public class Helpers {
     }
 
     public static List<Event> createEvents(){
-        //TODO - Keys
         Game game = new Game();
         game.setGamePk(748534L);
 
@@ -565,6 +565,125 @@ public class Helpers {
         e3.setType("pitch");
 
         return List.of(e1, e2, e3);
+    }
+
+    public static List<Batter> createHomeBatters(){
+        List<Batter> batters = new LinkedList<>();
+
+        Game game = new Game();
+        game.setGamePk(748534L);
+
+        Team home = new Team();
+        home.setId(109L);
+
+        List<Long> homeIds = List.of(682998L, 606466L, 672515L, 572233L, 502054L, 666971L, 677950L, 446334L, 656976L, 656896L, 672695L, 668678L, 656464L, 623149L);
+
+        for(Long id : homeIds){
+            Person person = new Person();
+            person.setId(id);
+
+            Batter batter = new Batter();
+            batter.setBatter(person);
+            batter.setTeam(home);
+            batter.setGame(game);
+
+            batters.add(batter);
+        }
+
+        return batters;
+    }
+
+    public static List<Batter> createAwayBatters(){
+        List<Batter> batters = new LinkedList<>();
+
+        Game game = new Game();
+        game.setGamePk(748534L);
+
+        Team away = new Team();
+        away.setId(140L);
+
+        List<Long> awayIds = List.of(543760L, 608369L, 694497L, 641598L, 673962L, 663993L, 641680L, 665750L, 608671L, 543135L, 547973L, 622250L);
+
+        for(Long id : awayIds){
+            Person person = new Person();
+            person.setId(id);
+
+            Batter batter = new Batter();
+            batter.setBatter(person);
+            batter.setTeam(away);
+            batter.setGame(game);
+
+            batters.add(batter);
+        }
+
+        return batters;
+    }
+
+    public static List<Batter> createBatters(){
+        List<Batter> batters = new LinkedList<>();
+        batters.addAll(createHomeBatters());
+        batters.addAll(createAwayBatters());
+        return batters;
+    }
+
+
+    public static List<BattingOrder> createHomeBattingOrder(){
+        List<BattingOrder> output = new LinkedList<>();
+        List<Long> battingOrder = List.of(682998L, 606466L, 672515L, 572233L, 502054L, 666971L, 677950L, 656896L, 672695L);
+
+        Game game = new Game();
+        game.setGamePk(748534L);
+
+        Team home = new Team();
+        home.setId(109L);
+
+        for(int i = 0; i < battingOrder.size(); i++){
+            BattingOrder bo = new BattingOrder();
+            bo.setTeam(home);
+            bo.setGame(game);
+            bo.setPosition((long)i + 1);
+
+            Person person = new Person();
+            person.setId(battingOrder.get(i));
+
+            bo.setBatter(person);
+            output.add(bo);
+        }
+
+        return output;
+    }
+
+    public static List<BattingOrder> createAwayBattingOrder(){
+        List<BattingOrder> output = new LinkedList<>();
+        List<Long> battingOrder = List.of(543760L, 608369L, 694497L, 641598L, 673962L, 663993L, 641680L, 665750L, 608671L);
+
+        Game game = new Game();
+        game.setGamePk(748534L);
+
+        Team away = new Team();
+        away.setId(140L);
+
+        for(int i = 0; i < battingOrder.size(); i++){
+            BattingOrder bo = new BattingOrder();
+            bo.setTeam(away);
+            bo.setGame(game);
+            bo.setPosition((long)i + 1);
+
+            Person person = new Person();
+            person.setId(battingOrder.get(i));
+
+            bo.setBatter(person);
+            output.add(bo);
+        }
+
+        return output;
+    }
+
+    public static List<BattingOrder> createBattingOrder(){
+        List<BattingOrder> output = new LinkedList<>();
+        output.addAll(createHomeBattingOrder());
+        output.addAll(createAwayBattingOrder());
+        return output;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.nxx5.baseball;
 
 import com.nxx5.baseball.hibernate.*;
+import jakarta.persistence.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -58,6 +60,12 @@ public class TestHibernate {
         configuration.addAnnotatedClass(Runner.class);
         configuration.addAnnotatedClass(Credit.class);
         configuration.addAnnotatedClass(Event.class);
+        configuration.addAnnotatedClass(Batter.class);
+        configuration.addAnnotatedClass(BattingOrder.class);
+        configuration.addAnnotatedClass(Bench.class);
+        configuration.addAnnotatedClass(Bullpen.class);
+        configuration.addAnnotatedClass(GamePosition.class);
+        configuration.addAnnotatedClass(Pitcher.class);
 
 
         sessionFactory = configuration.buildSessionFactory();
@@ -272,6 +280,108 @@ public class TestHibernate {
         }
 
         transaction.rollback();
+    }
+
+    @Test
+    public void testBatters(){
+        Transaction transaction = sessionFactory.getCurrentSession().beginTransaction();
+
+        Query query = sessionFactory.getCurrentSession().createQuery("select count(*) from batter");
+        assertEquals(0, query.getFirstResult());
+
+        Game g = new Game();
+        g.setGamePk(748534L);
+        sessionFactory.getCurrentSession().merge(g);
+
+        Team away = new Team();
+        away.setId(140L);
+        sessionFactory.getCurrentSession().merge(away);
+
+        Team home = new Team();
+        home.setId(109L);
+        sessionFactory.getCurrentSession().merge(home);
+
+        List<Batter> batters = Helpers.createBatters();
+
+        for(Batter b : batters){
+            sessionFactory.getCurrentSession().merge(b.getBatter());
+            sessionFactory.getCurrentSession().merge(b);
+        }
+
+        query = sessionFactory.getCurrentSession().createQuery("select b from batter b");
+        assertEquals(new HashSet<>(batters), new HashSet<>(query.getResultList()));
+
+        query = sessionFactory.getCurrentSession().createQuery("select b from batter b where team = :team_id");
+        query.setParameter("team_id", away);
+        assertEquals(new HashSet<>(Helpers.createAwayBatters()), new HashSet<>(query.getResultList()));
+
+        query = sessionFactory.getCurrentSession().createQuery("select b from batter b where team = :team_id");
+        query.setParameter("team_id", home);
+        assertEquals(new HashSet<>(Helpers.createHomeBatters()), new HashSet<>(query.getResultList()));
+
+
+        transaction.rollback();
+
+    }
+
+    @Test
+    public void testBattingOrder(){
+        Transaction transaction = sessionFactory.getCurrentSession().beginTransaction();
+
+        Query query = sessionFactory.getCurrentSession().createQuery("select count(*) from batting_order");
+        assertEquals(0, query.getFirstResult());
+
+        Game g = new Game();
+        g.setGamePk(748534L);
+        sessionFactory.getCurrentSession().merge(g);
+
+        Team away = new Team();
+        away.setId(140L);
+        sessionFactory.getCurrentSession().merge(away);
+
+        Team home = new Team();
+        home.setId(109L);
+        sessionFactory.getCurrentSession().merge(home);
+
+        List<BattingOrder> batters = Helpers.createBattingOrder();
+
+        for(BattingOrder b : batters){
+            sessionFactory.getCurrentSession().merge(b.getBatter());
+            sessionFactory.getCurrentSession().merge(b);
+        }
+
+        query = sessionFactory.getCurrentSession().createQuery("select b from batting_order b");
+        assertEquals(new HashSet<>(batters), new HashSet<>(query.getResultList()));
+
+        query = sessionFactory.getCurrentSession().createQuery("select b from batting_order b where team = :team_id");
+        query.setParameter("team_id", away);
+        assertEquals(new HashSet<>(Helpers.createAwayBattingOrder()), new HashSet<>(query.getResultList()));
+
+        query = sessionFactory.getCurrentSession().createQuery("select b from batting_order b where team = :team_id");
+        query.setParameter("team_id", home);
+        assertEquals(new HashSet<>(Helpers.createHomeBattingOrder()), new HashSet<>(query.getResultList()));
+
+        BattingOrder homeLeadoff = new BattingOrder();
+        Person p = new Person();
+        p.setId(682998L);
+        homeLeadoff.setBatter(p);
+        homeLeadoff.setTeam(home);
+        homeLeadoff.setGame(g);
+        homeLeadoff.setPosition(1L);
+
+        BattingOrder awayLeadoff = new BattingOrder();
+        p = new Person();
+        p.setId(543760L);
+        awayLeadoff.setBatter(p);
+        awayLeadoff.setTeam(away);
+        awayLeadoff.setGame(g);
+        awayLeadoff.setPosition(1L);
+
+        query = sessionFactory.getCurrentSession().createQuery("select b from batting_order b where position = 1");
+        assertEquals(new HashSet<>(List.of(homeLeadoff, awayLeadoff)), new HashSet<>(query.getResultList()));
+
+        transaction.rollback();
+
     }
 
 }

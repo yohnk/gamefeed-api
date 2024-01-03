@@ -77,7 +77,6 @@ public class Team {
     @Column
     private Boolean active;
 
-    //TODO - Cleanup
     @EqualsAndHashCode.Include
     public Long getLeagueId(){
         return league == null ? null : league.getId();
