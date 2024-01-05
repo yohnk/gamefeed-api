@@ -29,6 +29,13 @@ public class ProbablePitchers {
     @EqualsAndHashCode.Exclude
     private Person home;
 
+    public void setGame(Game game) {
+        this.game = game;
+        if(this.game != null && this.game.getProbablePitchers() == null){
+            this.game.setProbablePitchers(this);
+        }
+    }
+
     @EqualsAndHashCode.Include
     private Long gameId(){
         return game == null ? null : game.getGamePk();

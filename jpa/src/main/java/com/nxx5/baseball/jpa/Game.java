@@ -1,9 +1,6 @@
 package com.nxx5.baseball.jpa;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -83,6 +81,16 @@ public class Game {
 
     @Column
     private Long gameDurationMinutes;
+
+    @OneToOne(cascade = CascadeType.MERGE)
+    private ProbablePitchers probablePitchers;
+
+    public void setProbablePitchers(ProbablePitchers probablePitchers) {
+        this.probablePitchers = probablePitchers;
+        if(this.probablePitchers != null && this.probablePitchers.getGame() == null){
+            this.probablePitchers.setGame(this);
+        }
+    }
 
     @EqualsAndHashCode.Include
     private Long venueId(){

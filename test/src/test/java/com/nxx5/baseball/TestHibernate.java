@@ -122,6 +122,7 @@ public class TestHibernate {
     public void testGame(){
         Game game = Helpers.createGame();
         ProbablePitchers pp = Helpers.createProbablePitchers();
+        game.setProbablePitchers(pp);
 
         Transaction transaction = sessionFactory.getCurrentSession().beginTransaction();
         assertNull(sessionFactory.getCurrentSession().get(Game.class, game.getGamePk()));
@@ -154,11 +155,10 @@ public class TestHibernate {
         sessionFactory.getCurrentSession().merge(game.getStatus());
         sessionFactory.getCurrentSession().merge(game.getType());
 
-        sessionFactory.getCurrentSession().merge(game);
+        sessionFactory.getCurrentSession().merge(game.getProbablePitchers().getHome());
+        sessionFactory.getCurrentSession().merge(game.getProbablePitchers().getAway());
 
-        sessionFactory.getCurrentSession().merge(pp.getHome());
-        sessionFactory.getCurrentSession().merge(pp.getAway());
-        sessionFactory.getCurrentSession().merge(pp);
+        sessionFactory.getCurrentSession().merge(game);
 
         assertEquals(pp, sessionFactory.getCurrentSession().get(ProbablePitchers.class, 748534L));
 
