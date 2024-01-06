@@ -3,14 +3,12 @@ package com.nxx5.baseball.jpa;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@RequiredArgsConstructor
 @EqualsAndHashCode
 @Entity(name = "bench")
 public class Bench {
@@ -23,11 +21,13 @@ public class Bench {
     @Id
     @ManyToOne
     @EqualsAndHashCode.Exclude
+    @NonNull
     private Person batter;
 
     @Id
     @ManyToOne
     @EqualsAndHashCode.Exclude
+    @NonNull
     private Team team;
 
     @EqualsAndHashCode.Include

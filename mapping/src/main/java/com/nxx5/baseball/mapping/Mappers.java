@@ -3,29 +3,36 @@ package com.nxx5.baseball.mapping;
 import com.nxx5.baseball.jpa.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.nxx5.baseball.records.BoxScorePlayer;
+import org.nxx5.baseball.records.BoxScoreTeam;
+import org.nxx5.baseball.records.BoxScoreTeams;
 import org.nxx5.baseball.records.ScheduledGame;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Mapper
 public interface Mappers {
 
-    @Mapping(target="abstractGameState", source = "schedule.status.abstractGameState")
-    @Mapping(target="codedGameState", source = "schedule.status.codedGameState")
-    @Mapping(target="detailedState", source = "schedule.status.detailedState")
-    @Mapping(target="statusCode", source = "schedule.status.statusCode")
-    @Mapping(target="startTimeTBD", source = "schedule.status.startTimeTBD")
-    @Mapping(target="abstractGameCode", source = "schedule.status.abstractGameCode")
-    @Mapping(target="awayTeam", source = "schedule.teams.away.team")
-    @Mapping(target="homeTeam", source = "schedule.teams.home.team")
+    @Mapping(target = "abstractGameState", source = "schedule.status.abstractGameState")
+    @Mapping(target = "codedGameState", source = "schedule.status.codedGameState")
+    @Mapping(target = "detailedState", source = "schedule.status.detailedState")
+    @Mapping(target = "statusCode", source = "schedule.status.statusCode")
+    @Mapping(target = "startTimeTBD", source = "schedule.status.startTimeTBD")
+    @Mapping(target = "abstractGameCode", source = "schedule.status.abstractGameCode")
+    @Mapping(target = "awayTeam", source = "schedule.teams.away.team")
+    @Mapping(target = "homeTeam", source = "schedule.teams.home.team")
     Schedule convertSchedule(ScheduledGame schedule);
 
     Team convertTeam(org.nxx5.baseball.records.Team team);
 
     Position convertPosition(org.nxx5.baseball.records.Position position);
 
-    @Mapping(target="batSideCode", source = "batSide.code")
-    @Mapping(target="batSideDescription", source = "batSide.description")
-    @Mapping(target="pitchHandCode", source = "pitchHand.code")
-    @Mapping(target="pitchHandDescription", source = "pitchHand.description")
+    @Mapping(target = "batSideCode", source = "batSide.code")
+    @Mapping(target = "batSideDescription", source = "batSide.description")
+    @Mapping(target = "pitchHandCode", source = "pitchHand.code")
+    @Mapping(target = "pitchHandDescription", source = "pitchHand.description")
     Person convertPerson(org.nxx5.baseball.records.Person person);
 
     default GameType convertGameType(String type) {
@@ -37,16 +44,16 @@ public interface Mappers {
     @Mapping(target = "timezone", source = "timeZone")
     Venue convertVenue(org.nxx5.baseball.records.Venue venue);
 
-    @Mapping(target="latitude", source="defaultCoordinates.latitude")
-    @Mapping(target="longitude", source="defaultCoordinates.longitude")
+    @Mapping(target = "latitude", source = "defaultCoordinates.latitude")
+    @Mapping(target = "longitude", source = "defaultCoordinates.longitude")
     Location convertLocation(org.nxx5.baseball.records.Location location);
 
     @Mapping(target = "tzOffset", source = "offset")
     Timezone convertTimezone(org.nxx5.baseball.records.Timezone timezone);
 
-    @Mapping(target="leftField", source="left")
-    @Mapping(target="centerField", source="center")
-    @Mapping(target="rightField", source="right")
+    @Mapping(target = "leftField", source = "left")
+    @Mapping(target = "centerField", source = "center")
+    @Mapping(target = "rightField", source = "right")
     FieldInfo convertFieldInfo(org.nxx5.baseball.records.FieldInfo fieldInfo);
 
     @Mapping(target = "type", source = "result.type")
@@ -180,5 +187,76 @@ public interface Mappers {
     @Mapping(target = "gameDurationMinutes", source = "gameData.gameInfo.gameDurationMinutes")
     @Mapping(target = "probablePitchers", source = "gameData.probablePitchers")
     @Mapping(target = "plays", source = "liveData.plays.allPlays")
+    @Mapping(target = "gamePositions", source = "liveData.boxscore.teams")
+    @Mapping(target = "batters", source = "liveData.boxscore.teams")
+    @Mapping(target = "pitchers", source = "liveData.boxscore.teams")
+    @Mapping(target = "bench", source = "liveData.boxscore.teams")
+    @Mapping(target = "bullpen", source = "liveData.boxscore.teams")
+    @Mapping(target = "battingOrder", source = "liveData.boxscore.teams")
     Game convertGame(org.nxx5.baseball.records.GameFeed api);
+
+    default Set<GamePosition> convertGamePositions(BoxScoreTeams teams) {
+        HashSet<GamePosition> output = new HashSet<>();
+        for (BoxScoreTeam team : List.of(teams.home(), teams.away())) {
+            for (BoxScorePlayer player : team.players().values()) {
+                if(player.allPositions() != null) {
+                    for (org.nxx5.baseball.records.Position p : player.allPositions()) {
+                        GamePosition gp = new GamePosition();
+                        gp.setPosition(convertPosition(p));
+                        gp.setTeam(convertTeam(team.team()));
+                        gp.setBatter(convertPerson(player.person()));
+                        output.add(gp);
+                    }
+                }
+            }
+        }
+        return output;
+    }
+
+    default Set<Batter> convertBatters(BoxScoreTeams teams) {
+        HashSet<Batter> output = new HashSet<>();
+        for (BoxScoreTeam team : List.of(teams.home(), teams.away())) {
+            output.addAll(team.batters().stream().map(i -> new Batter(new Person(i), convertTeam(team.team()))).toList());
+        }
+        return output;
+    }
+
+    default Set<Pitcher> convertPitchers(BoxScoreTeams teams) {
+        HashSet<Pitcher> output = new HashSet<>();
+        for (BoxScoreTeam team : List.of(teams.home(), teams.away())) {
+            output.addAll(team.batters().stream().map(i -> new Pitcher(new Person(i), convertTeam(team.team()))).toList());
+        }
+        return output;
+    }
+
+    default Set<Bench> convertBench(BoxScoreTeams teams) {
+        HashSet<Bench> output = new HashSet<>();
+        for (BoxScoreTeam team : List.of(teams.home(), teams.away())) {
+            output.addAll(team.batters().stream().map(i -> new Bench(new Person(i), convertTeam(team.team()))).toList());
+        }
+        return output;
+    }
+
+    default Set<Bullpen> convertBullpen(BoxScoreTeams teams) {
+        HashSet<Bullpen> output = new HashSet<>();
+        for (BoxScoreTeam team : List.of(teams.home(), teams.away())) {
+            output.addAll(team.batters().stream().map(i -> new Bullpen(new Person(i), convertTeam(team.team()))).toList());
+        }
+        return output;
+    }
+
+    default Set<BattingOrder> convertBattingOrder(BoxScoreTeams teams) {
+        HashSet<BattingOrder> output = new HashSet<>();
+        for (BoxScoreTeam team : List.of(teams.home(), teams.away())) {
+            for(int i = 0; i < team.battingOrder().size(); i++){
+                Long id = team.battingOrder().get(i);
+                BattingOrder bo = new BattingOrder();
+                bo.setBatter(new Person(id));
+                bo.setTeam(convertTeam(team.team()));
+                bo.setPosition((long)i + 1);
+                output.add(bo);
+            }
+        }
+        return output;
+    }
 }
