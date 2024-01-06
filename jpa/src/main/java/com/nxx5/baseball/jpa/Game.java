@@ -8,7 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @Setter
@@ -84,6 +84,76 @@ public class Game {
 
     @OneToOne(cascade = CascadeType.MERGE)
     private ProbablePitchers probablePitchers;
+
+    @OneToMany(cascade = CascadeType.MERGE)
+    private Set<Play> plays = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE)
+    private Set<GamePosition> gamePositions = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE)
+    private Set<Batter> batters = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE)
+    private Set<Pitcher> pitchers = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE)
+    private Set<Bench> bench = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE)
+    private Set<Bullpen> bullpen = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE)
+    private Set<BattingOrder> battingOrder = new HashSet<>();
+
+    public void addBattingOrder(BattingOrder b){
+        if(battingOrder != null){
+            b.setGame(this);
+            battingOrder.add(b);
+        }
+    }
+
+    public void addBullpen(Bullpen b){
+        if(bullpen != null){
+            b.setGame(this);
+            bullpen.add(b);
+        }
+    }
+
+    public void addBench(Bench b){
+        if(bench != null){
+            b.setGame(this);
+            bench.add(b);
+        }
+    }
+
+    public void addPitcher(Pitcher pitcher){
+        if(pitchers != null){
+            pitcher.setGame(this);
+            pitchers.add(pitcher);
+        }
+    }
+
+    public void addBatter(Batter batter){
+        if(batters != null){
+            batter.setGame(this);
+            batters.add(batter);
+        }
+    }
+
+    public void addPlay(Play play){
+        if(plays != null){
+            plays.add(play);
+            play.setGame(this);
+        }
+    }
+
+    public void addGamePosition(GamePosition position){
+        if(gamePositions != null){
+            position.setGame(this);
+            gamePositions.add(position);
+        }
+    }
 
     public void setProbablePitchers(ProbablePitchers probablePitchers) {
         this.probablePitchers = probablePitchers;

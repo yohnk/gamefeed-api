@@ -685,4 +685,67 @@ public class Helpers {
         return output;
     }
 
+    public static List<GamePosition> createGamePositions(){
+        Position p1 = new Position();
+        p1.setAbbreviation("2B");
+        p1.setType("Infielder");
+        p1.setName("Second Base");
+        p1.setCode("4");
+
+        GamePosition g1 = new GamePosition();
+        g1.setTeam(new Team(140L));
+        g1.setBatter(new Person(10L));
+        g1.setPosition(p1);
+
+        Position p2 = new Position();
+        p2.setAbbreviation("P");
+        p2.setType("Pitcher");
+        p2.setName("Pitcher");
+        p2.setCode("1");
+
+        GamePosition g2 = new GamePosition();
+        g2.setTeam(new Team(140L));
+        g2.setBatter(new Person(10L));
+        g2.setPosition(p2);
+
+        return List.of(g1, g2);
+    }
+
+    public static List<Pitcher> createPitchers(){
+        Pitcher p1 = new Pitcher();
+        p1.setBatter(new Person(10L));
+        p1.setTeam(new Team(140L));
+
+        Pitcher p2 = new Pitcher();
+        p2.setBatter(new Person(11L));
+        p2.setTeam(new Team(104L));
+
+        return List.of(p1, p2);
+    }
+
+    public static List<Bench> createBench(){
+        Bench b1 = new Bench();
+        b1.setBatter(new Person(10L));
+        b1.setTeam(new Team(140L));
+
+        Bench b2 = new Bench();
+        b2.setBatter(new Person(11L));
+        b2.setTeam(new Team(104L));
+
+        return List.of(b1, b2);
+    }
+
+    public static List<Bullpen> createBullpen(){
+        Bullpen b1 = new Bullpen();
+        b1.setBatter(new Person(10L));
+        b1.setTeam(new Team(140L));
+
+        Bullpen b2 = new Bullpen();
+        b2.setBatter(new Person(11L));
+        b2.setTeam(new Team(104L));
+
+        return List.of(b1, b2);
+    }
+
+
 }

@@ -7,6 +7,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -211,7 +212,7 @@ public class Event {
     }
 
     @EqualsAndHashCode.Include
-    private Long atBatIndex(){
+    public Long atBatIndex(){
         return play == null ? null : play.getAtBatIndex();
     }
 

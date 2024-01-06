@@ -1,12 +1,11 @@
 package com.nxx5.baseball.jpa;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.OffsetDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -90,14 +89,46 @@ public class Play {
     private Long outs;
 
     @ManyToOne
+    @EqualsAndHashCode.Exclude
     private Person batter;
 
     @ManyToOne
+    @EqualsAndHashCode.Exclude
     private Person pitcher;
+
+    @OneToMany(cascade = CascadeType.MERGE)
+    private Set<Runner> runners = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE)
+    private Set<Event> events = new HashSet<>();
+
+    public void addRunner(Runner r){
+        if(runners != null){
+            r.setPlay(this);
+            runners.add(r);
+        }
+    }
+
+    public void addEvent(Event e){
+        if(events != null){
+            e.setPlay(this);
+            events.add(e);
+        }
+    }
 
     @EqualsAndHashCode.Include
     protected Long gameId(){
         return game == null ? null : game.getGamePk();
+    }
+
+    @EqualsAndHashCode.Include
+    protected Long batterId(){
+        return batter == null ? null : batter.getId();
+    }
+
+    @EqualsAndHashCode.Include
+    protected Long pitcherId(){
+        return pitcher == null ? null : pitcher.getId();
     }
 
 }

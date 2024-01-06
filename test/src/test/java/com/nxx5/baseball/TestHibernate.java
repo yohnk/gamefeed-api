@@ -2,6 +2,7 @@ package com.nxx5.baseball;
 
 import com.nxx5.baseball.jpa.*;
 import jakarta.persistence.Query;
+import org.hibernate.CacheMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -120,11 +122,22 @@ public class TestHibernate {
 
     @Test
     public void testGame(){
+        Play play = Helpers.createPlay();
         Game game = Helpers.createGame();
         ProbablePitchers pp = Helpers.createProbablePitchers();
+        Helpers.createRunners().forEach(play::addRunner);
+        Helpers.createEvents().forEach(play::addEvent);
         game.setProbablePitchers(pp);
+        game.addPlay(play);
+        Helpers.createGamePositions().forEach(game::addGamePosition);
+        Helpers.createBatters().forEach(game::addBatter);
+        Helpers.createPitchers().forEach(game::addPitcher);
+        Helpers.createBench().forEach(game::addBench);
+        Helpers.createBullpen().forEach(game::addBullpen);
+        Helpers.createBattingOrder().forEach(game::addBattingOrder);
 
         Transaction transaction = sessionFactory.getCurrentSession().beginTransaction();
+
         assertNull(sessionFactory.getCurrentSession().get(Game.class, game.getGamePk()));
         assertNull(sessionFactory.getCurrentSession().get(Team.class, game.getAway().getLeague().getId()));
         assertNull(sessionFactory.getCurrentSession().get(Team.class, game.getAway().getSpringLeague().getId()));
@@ -158,11 +171,54 @@ public class TestHibernate {
         sessionFactory.getCurrentSession().merge(game.getProbablePitchers().getHome());
         sessionFactory.getCurrentSession().merge(game.getProbablePitchers().getAway());
 
+        for(GamePosition gp : game.getGamePositions()){
+            sessionFactory.getCurrentSession().merge(gp.getTeam());
+            sessionFactory.getCurrentSession().merge(gp.getBatter());
+            sessionFactory.getCurrentSession().merge(gp.getPosition());
+        }
+
+        for(Play p : game.getPlays()){
+            sessionFactory.getCurrentSession().merge(p.getBatter());
+            sessionFactory.getCurrentSession().merge(p.getPitcher());
+            for(Event e : p.getEvents()){
+                if(e.getPosition() != null) {
+                    sessionFactory.getCurrentSession().merge(e.getPosition());
+                }
+                if(e.getPlayer() != null) {
+                    sessionFactory.getCurrentSession().merge(e.getPlayer());
+                }
+            }
+            for(Runner r : p.getRunners()){
+                if(r.getResponsiblePitcher() != null) {
+                    sessionFactory.getCurrentSession().merge(r.getResponsiblePitcher());
+                }
+                if(r.getRunner() != null) {
+                    sessionFactory.getCurrentSession().merge(r.getRunner());
+                }
+            }
+        }
+
+        for(Batter b : game.getBatters()){
+            sessionFactory.getCurrentSession().merge(b.getBatter());
+            sessionFactory.getCurrentSession().merge(b.getTeam());
+        }
+
         sessionFactory.getCurrentSession().merge(game);
-
+        
         assertEquals(pp, sessionFactory.getCurrentSession().get(ProbablePitchers.class, 748534L));
+        Play persistedPlay = sessionFactory.getCurrentSession().get(Play.class, play);
 
-        assertEquals(game, sessionFactory.getCurrentSession().get(Game.class, 748534L));
+        assertEquals(play, persistedPlay);
+        Game persistedGame = sessionFactory.getCurrentSession().get(Game.class, 748534L);
+        assertEquals(persistedGame.getPlays(), Set.of(play));
+        assertEquals(persistedGame.getGamePositions(), game.getGamePositions());
+        assertEquals(persistedGame.getBatters(), game.getBatters());
+        assertEquals(persistedGame.getPitchers(), game.getPitchers());
+        assertEquals(persistedGame.getBench(), game.getBench());
+        assertEquals(persistedGame.getBullpen(), game.getBullpen());
+        assertEquals(persistedGame.getBattingOrder(), game.getBattingOrder());
+        assertEquals(game, persistedGame);
+
         transaction.rollback();
 
     }
