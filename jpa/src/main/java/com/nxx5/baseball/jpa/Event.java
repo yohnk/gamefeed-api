@@ -198,6 +198,30 @@ public class Event {
     @Column
     private Boolean isSubstitution;
 
+    @Column
+    private Double launchSpeed;
+
+    @Column
+    private Double launchAngle;
+
+    @Column
+    private Double totalDistance;
+
+    @Column
+    private String trajectory;
+
+    @Column
+    private String hardness;
+
+    @Column
+    private Long location;
+
+    @Column
+    private Double hitX;
+
+    @Column
+    private Double hitY;
+
     @ManyToOne
     @EqualsAndHashCode.Exclude
     private Person player;

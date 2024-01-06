@@ -109,11 +109,19 @@ public class Play {
         }
     }
 
+    public void setRunners(Set<Runner> runners) {
+        runners.forEach(this::addRunner);
+    }
+
     public void addEvent(Event e){
         if(events != null){
             e.setPlay(this);
             events.add(e);
         }
+    }
+
+    public void setEvents(Set<Event> events) {
+        events.forEach(this::addEvent);
     }
 
     @EqualsAndHashCode.Include

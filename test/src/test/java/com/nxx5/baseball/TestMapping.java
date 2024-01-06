@@ -190,4 +190,16 @@ public class TestMapping {
         assertEquals("phone", cl.getPhone());
     }
 
+    @Test
+    public void testGame(){
+        Gson gson = GsonBuild.builder().create();
+        org.nxx5.baseball.records.GameFeed api = gson.fromJson(getFile("gamefeed.json"), org.nxx5.baseball.records.GameFeed.class);
+
+        Mappers mapper = org.mapstruct.factory.Mappers.getMapper(Mappers.class);
+        Game game = mapper.convertGame(api);
+
+        System.out.println();
+
+    }
+
 }

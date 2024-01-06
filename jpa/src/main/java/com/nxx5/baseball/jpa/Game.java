@@ -113,11 +113,19 @@ public class Game {
         }
     }
 
+    public void setBattingOrder(Set<BattingOrder> battingOrder) {
+        battingOrder.forEach(this::addBattingOrder);
+    }
+
     public void addBullpen(Bullpen b){
         if(bullpen != null){
             b.setGame(this);
             bullpen.add(b);
         }
+    }
+
+    public void setBullpen(Set<Bullpen> bullpen) {
+        bullpen.forEach(this::addBullpen);
     }
 
     public void addBench(Bench b){
@@ -127,11 +135,19 @@ public class Game {
         }
     }
 
+    public void setBench(Set<Bench> bench) {
+        bench.forEach(this::addBench);
+    }
+
     public void addPitcher(Pitcher pitcher){
         if(pitchers != null){
             pitcher.setGame(this);
             pitchers.add(pitcher);
         }
+    }
+
+    public void setPitchers(Set<Pitcher> pitchers) {
+        pitchers.forEach(this::addPitcher);
     }
 
     public void addBatter(Batter batter){
@@ -141,11 +157,19 @@ public class Game {
         }
     }
 
+    public void setBatters(Set<Batter> batters) {
+        batters.forEach(this::addBatter);
+    }
+
     public void addPlay(Play play){
         if(plays != null){
             plays.add(play);
             play.setGame(this);
         }
+    }
+
+    public void setPlays(Set<Play> plays) {
+        plays.forEach(this::addPlay);
     }
 
     public void addGamePosition(GamePosition position){

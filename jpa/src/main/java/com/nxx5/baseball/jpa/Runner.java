@@ -1,10 +1,10 @@
 package com.nxx5.baseball.jpa;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -71,6 +71,20 @@ public class Runner {
 
     @Column
     private Long playIndex;
+
+    @OneToMany(cascade = CascadeType.MERGE)
+    private Set<Credit> credits = new HashSet<>();
+
+    public void addCredit(Credit credit){
+        if(credits != null){
+            credit.setRunner(this);
+            credits.add(credit);
+        }
+    }
+
+    public void setCredits(Set<Credit> credits) {
+        credits.forEach(this::addCredit);
+    }
 
     @EqualsAndHashCode.Include
     protected Long gameId(){

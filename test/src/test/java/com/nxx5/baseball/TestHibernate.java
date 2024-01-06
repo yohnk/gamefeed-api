@@ -125,7 +125,10 @@ public class TestHibernate {
         Play play = Helpers.createPlay();
         Game game = Helpers.createGame();
         ProbablePitchers pp = Helpers.createProbablePitchers();
-        Helpers.createRunners().forEach(play::addRunner);
+        List<Runner> runners = Helpers.createRunners();
+        List<Credit> credits = Helpers.createCredits();
+        runners.get(0).setCredits(new HashSet<>(credits));
+        runners.forEach(play::addRunner);
         Helpers.createEvents().forEach(play::addEvent);
         game.setProbablePitchers(pp);
         game.addPlay(play);
@@ -201,6 +204,11 @@ public class TestHibernate {
         for(Batter b : game.getBatters()){
             sessionFactory.getCurrentSession().merge(b.getBatter());
             sessionFactory.getCurrentSession().merge(b.getTeam());
+        }
+
+        for(Credit c : credits){
+            sessionFactory.getCurrentSession().merge(c.getPlayer());
+            sessionFactory.getCurrentSession().merge(c.getPosition());
         }
 
         sessionFactory.getCurrentSession().merge(game);

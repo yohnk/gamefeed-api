@@ -5,9 +5,7 @@ import com.nxx5.baseball.jpa.*;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Helpers {
 
@@ -238,6 +236,7 @@ public class Helpers {
 
         game.setAttendance(48511L);
         game.setFirstPitch(OffsetDateTime.of(2023, 11, 2, 0, 6, 0, 0, ZoneOffset.UTC));
+        game.setGameDurationMinutes(174L);
 
         return game;
     }
